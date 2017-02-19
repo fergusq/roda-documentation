@@ -1,0 +1,19 @@
+| set title self.title |
+| block content |
+	<div class="funclist">
+		<h2>Pages</h2>
+		<ul>
+		| for page in pages |
+			<li><a href="|root page.path|">|page.title|</a></li>
+		| end |
+		</ul>
+	</div>
+	<div class="funcdoc">
+		<h2>|self.title|</h2>
+	| for paragraph in self.content |
+		| include "templates/_paragraph.plan" |
+	| end |
+	</div>
+| end |
+
+| include "templates/_page.plan" |

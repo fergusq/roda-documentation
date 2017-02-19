@@ -1,0 +1,223 @@
+[
+	{
+		"name": "introduction",
+		"title": "Introduction",
+		"next": "variables",
+		"content": [
+			[
+				"Röda is an advanced scripting language based on Bourne shell and inspired by Python, Ruby, Perl and other scripting languages.",
+				"It can be used as a general-purpose language,",
+				"but it's most useful in string processing, parsing data files, handling sequenced data and code generation."
+			],
+			[
+				"The distinctive feature of Röda is the <i>stream</i>, an omnipresent queue that contains the data to be processed.",
+				"Functions can take values from the stream and push them back modified.",
+				"Streams will be covered later in many chapters."
+			],
+			[
+				"This chapter contains some practical information related to the language and its interpreter."
+			],
+			{ "type": "subtitle", "text": "The name 'Röda'" },
+			[
+				"<a href=\"https://en.wiktionary.org/wiki/r%C3%B6da\">'Röda'</a> is a Swedish word for 'red'.",
+				"The vowel ö is pronounced like in the German word 'schön'. IPA: /'røː.da/"
+			],
+			[
+				"As some character sets do not contain the letter Ö, the name may be spelled as 'Roda'.",
+				"This should only be done when it is impossible to spell the name right.",
+				"Sometimes the name is also spelled 'Roeda'."
+			],
+			{ "type": "subtitle", "text": "The interpreter" },
+			[
+				"The reference implementation of the language is röda.jar.",
+				"It supports all features documented in this guide."
+			],
+			[
+				"To run a Röda program, specify the file name as an argument to the interpreter:"
+			],
+			{ "type": "pre", "code": "$ röda file.röd" },
+			[
+				"Without arguments the interpreter will be opened in the interactive mode."
+			],
+			{ "type": "subtitle", "text": "Röda files" },
+			[
+				"Röda files should have the file extension '.röd'. Again, if Ö is not supported, '.rod' can also be used."
+			],
+			[
+				"A typical file contains a list of imports at the begin and then a list of functions.",
+				"If one of the functions is named <code>main</code>, the file can be executed directly with röda.jar.",
+				"Otherwise the file is probably a library that can be imported."
+			],
+			{ "type": "pre", "code": [
+				"{\n    import \"library.röd\"\n}\n\n",
+				"function func {\n    ...\n}\n\n",
+				"main {\n    ...\n}"
+			] },
+			[
+				"The <code>function</code> keyword is optional, but it is a good practice to use it.",
+				"It is, however, often omitted before the main function."
+			],
+			{ "type": "subtitle", "text": "Comments" },
+			[
+				"Currently only C-style <code>/* */</code>-comments are supported."
+			],
+			{ "type": "subtitle", "text": "Indentation and semicolons" },
+			[
+				"Indentation has no role in the parsing (unlike Python), but it is recommended that code is indented in some rational way."
+			],
+			[
+				"The newlines, however, are significant.",
+				"There are some places in the code where must be a newline, and some places where must not."
+			],
+			[
+				"It is allowed to omit parantheses around function call arguments at the statement level,",
+				"but there must be a newline between the function name and the first argument."
+			],
+			{ "type": "pre", "code": [
+				"main {\n    func1 /* calling func1 */\n    func2 /* calling func2 */\n\n",
+				"    func1 func2 /* calling func1 with argument func 2 */\n\n",
+				"    func1() func2() /* calling func1 and then func2, both without arguments */\n}"
+			] },
+			[
+				"Röda supports so called suffix statements.",
+				"If one of the keywords 'if', 'unless', 'while', 'until' or 'for' is placed on the same line with another statement,",
+				"it is assumed to be a suffix control structure. Also, there must not be a newline between a suffix statement and its body."
+			],
+			{ "type": "pre", "code": [
+				"print(\"I'm happy!\") /* NO NEWLINE HERE */ if [ happy ]\n\n",
+				"print(\"Hey!\") /* NEWLINE HERE */\nif [ happy ] do\n    print(\"I'm happy\")\ndone"
+			] },
+			[
+				"If an anonymous function has parameters, there must be a newline or a semicolon after the parameter declaration."
+			],
+			{ "type": "pre", "code": [
+				"hello := { |text|; print(\"Hello \"..text) }\n\nhello(\"world\")"
+			] },
+			[
+				"A semicolon and a newline character are lexically equivalent, ie. they are treated as they were the same character."
+			]
+		]
+	},
+	{
+		"name": "variables",
+		"title": "Variables",
+		"previous": "introduction",
+		"next": "if",
+		"content": [
+			[
+				"As nearly every programming language, Röda has support for variable bindings.",
+				"The simplest way to use them is creating a variable with the <code>:=</code> operator and changing it with the <code>=</code> operator."
+			],
+			{ "type": "pre", "code": [
+				"main {\n    a := 3\n    print(a) /* 3 */\n    a = 4\n    print(a) /* 4 */\n}"
+			] },
+			[
+				"Röda is a dynamically typed language, which means that variables don't have a type bound to them.",
+				"This doesn't, however, imply that the types are not important.",
+				"Röda is also strongly typed and has a lot of type checks."
+			],
+			{ "type": "subtitle", "text": "Scopes, assignments and local assignments" },
+			[
+				"The scope of a variable means the part of the program where the variable is visible.",
+				"Generally every control structure body and block is a new scope.",
+				"A variable is visible in its declaration scope and super scopes but not in the super scopes."
+			],
+			[
+				"So, if a variable is created in a block, it can't be used outside it:"
+			],
+			{ "type": "pre", "code": [
+				"{\n    a := 3\n}\nprint(a) /* error */"
+			] },
+			[
+				"The <code>=</code> operator is called the assignment operator as it gives a variable a new value.",
+				"If the variable already exists in the current scope of a super scope, it will be changed.",
+				"Otherwise, a new variable will be created in the current scope."
+			],
+			{ "type": "pre", "code": [
+				"a := 1\n{\n    print(a) /* 1 */\n    a = 5\n    b = 3\n    print(a) /* 5 */\n    print(b) /* 3 */\n}\n",
+				"print(a) /* 5 */\n/* print(b) */ /* b is no longer visible */"
+			] },
+			[
+				"A local assignment is a special kind of assignment that will always modify only the current scope.",
+				"It won't change the values of the variables of the super scope.",
+				"The <code>:=</code> operator is used to perform a local assignment."
+			],
+			{ "type": "pre", "code": [
+				"a := 1\n{\n    print(a) /* 1 */\n    a := 5\n    print(a) /* 5 */\n}\n",
+				"print(a) /* 1 */"
+			] }
+		]
+	},
+	{
+		"name": "if",
+		"title": "If and unless",
+		"previous": "variables",
+		"next": "functions",
+		"content": [
+			[
+				"The if statement is used to branch the execution of the program conditionally."
+			],
+			{ "type": "pre", "code": [
+				"if [ age < 18 ] do\n    print(\"You are a child.\")\nelse\n    print(\"You are an adult.\")\ndone"
+			] },
+			[
+				"The else block is optional and may be omitted."
+			],
+			[
+				"The negative variant of if is the unless statement."
+			],
+			{ "type": "pre", "code": [
+				"unless [ age < 18 ] do\n    print(\"You are an adult.\")\nelse\n    print(\"You are a child.\")\ndone"
+			] },
+			[
+				"Both statements have a suffix form:"
+			],
+			{ "type": "pre", "code": [
+				"print(\"You are too young!\") unless [ age > 3 ]\n",
+				"print(\"How are you even using this program?\") if [ age = 0 ]"
+			] },
+			[
+				"The suffix form can sometimes be parsed in a way that the programmer did not intent:"
+			],
+			{ "type": "pre", "code": [
+				"age = parseInteger(text) if [ text =~ \"[0-9]+\" ] /* This won't work all will raise an error if text does not match the regex */"
+			] },
+			[
+				"The above error is a side-efect of the fact that function calls are statements and the suffix is bound to the call, not the assignment.",
+				"This is explained better in the next chapter."
+			]
+		]
+	},
+	{
+		"name": "functions",
+		"title": "Functions",
+		"previous": "if",
+		"content": [
+			"Every Röda program has at least one function. A function declaration is very simple:",
+			{ "type": "pre", "code": [
+				"function f(a, b) {\n}"
+			] },
+			[
+				"The declaration above contains the name of the function (<code>f</code>) and the parameters (<code>a</code> and <code>b</code>).",
+				"The <code>function</code> keyword and the parentheses may be omitted, but that is considered bad style.",
+				"Still, the main function is usually written as:"
+			],
+			{ "type": "pre", "code": [
+				"main {\n}"
+			] },
+			[
+				"Often functions are used to process data given.",
+				"For example, the following function will return the square of the given number:"
+			],
+			{ "type": "pre", "code": [
+				"function square(n) {\n    return n*n\n}"
+			] },
+			[
+				"To use the function, the simplest way is to write the name of the function and parentheses containing arguments."
+			],
+			{ "type": "pre", "code": [
+				"main {\n    print(square(2)) /* 4 */\n}"
+			] }
+		]
+	}
+]

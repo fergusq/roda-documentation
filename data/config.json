@@ -1,0 +1,27 @@
+{
+	"pageclasses": [
+		{
+			"name": "reference",
+			"dir": "reference",
+			"datafile": "reference.json",
+			"templatefile": "reference/_page.plan"
+		},
+		{
+			"name": "categories",
+			"datafile": "categories.json",
+			"collectkey": "categories"
+		},
+		{
+			"name": "guide",
+			"dir": "guide",
+			"datafile": "guide.json",
+			"templatefile": "guide/_page.plan"
+		},
+		{
+			"name": "pages",
+			"dir": "pages",
+			"datafile": "pages.json",
+			"templatefile": "pages/_page.plan"
+		}
+	]
+}

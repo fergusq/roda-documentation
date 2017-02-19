@@ -1,0 +1,218 @@
+[
+	{
+		"name": "variable_references",
+		"title": "Variable references",
+		"content": [
+			"When you try to use a variable that has not been declared, you'll get one of the two errors below:",
+			{ "type": "pre", "code": "$ röda\n! cat\n[E] variable 'cat' not found\n! print cat\n[E] variable not found (via implicite reference): cat" },
+			[
+				"What is their difference? In the first case, it is tried to call function 'cat' that does not exist.",
+				"Unsurprisingly, this results in an error.",
+				"In the second case it is tried to give 'cat' as an argument to the print function, which does not work either.",
+				"The error message, however, is different. Why?"
+			],
+			[
+				"It turns out that, unlike in the first case, the expression 'cat' in the second case is an <i>implicite reference</i> to the variable 'cat'.",
+				"The interpreter creates a new reference object and gives it to the print function.",
+				"This is done for every variable ever used as an argument, whether the corresponding parameter is declared to be a reference or not.",
+				"It is after evaluation of all arguments when the possible implicite references will be resolved – if needed."
+			],
+			{ "type": "subtitle", "text": "Evaluation of expressions" },
+			[
+				"Normally a variable name evaluates to the value of the variable, like a string or a function.",
+				"This is the case almost every time. There are, however, two places when something else happens.",
+				"They are the variable modifying statements and the function call arguments."
+			],
+			[
+				"In the above snippet, the expression <tt>cat</tt> evaluates to a reference to the variable 'cat'.",
+				"This is called an implicite reference.",
+				"Similarly, a reference is created in the code <tt>cat := 3</tt>. Because the value of the variable is going to be changed,",
+				"it would make no sense to resolve its current value."
+			],
+			{ "type": "subtitle", "text": "References parameters" },
+			[
+				"Most of parameters are by-value parameters, it is possible and useful to declare some to be a references.",
+				"For example, the <tt>pull</tt> has a reference parameter (actually a varargs list).",
+				"In the example below we declare a function with one reference parameter and one normal parameter."
+			],
+			{ "type": "pre", "code": "function f(&a, b) {\n    print(a, \" \", b)\n    a ++\n    b ++\n    print(a, \" \", b)\n}" },
+			"Lets see what happens when we use the function.",
+			{ "type": "pre", "code": "x := 0\ny := 0\nf(x, y)\nprint(x, \" \", y)\n/*\n0 0\n1 1\n1 0\n*/" },
+			[
+				"As expected, only <tt>x</tt> did change, as it was passed by reference."
+			]
+		]
+	},
+	{
+		"name": "cheat_sheet",
+		"title": "Syntax cheat sheet",
+		"content": [
+			"This page aims to cover the most syntactical features of the Röda language.",
+			"The notation <code>X, X, ..., X</code> is used to signify a list of <code>X</code> containing one or more elements separated by commas (separator may vary).",
+			{ "type": "subtitle", "text": "Levels of syntax" },
+			[
+				"On this page and other pages on this website, we use the term <i>level</i> to describe a context that can contain certain kind of",
+				"syntactical structures. For example, there can be only statements at the statement level and only expressions at the expression level.",
+				"In Röda this levels may be nested in many ways, as there can be statements inside expressions and expressions inside statements.",
+				"Many other programming languages don't allow nesting: there is a top level, a statement level and an expression level, and there it will end.",
+				"So keep in mind that this is not the case with Röda."
+			],
+			[
+				"A Röda file contains declarations of functions and record classes, so the top level is sometimes called the declaration level,",
+				"but that is not strictly correct as there can also be blocks of statements at the top level."
+			],
+			[
+				"This guide will cover the following levels of syntax:"
+			],
+			{ "type": "table", "caption": "Levels of syntax", "rows": [
+				{ "type": "header", "elements": ["Name", "Contains", "Where to find it"]},
+				["Top level", "Functions, record classes and code blocks", "The outmost level of syntax"],
+				["Field level", "Fields and methods", "Inside record class declarations"],
+				["Statement level", "Statement(s) (see below)",
+					"Inside functions and code blocks; conditions of if, unless, while and until; statement expressions"],
+				["Command level", "Command(s) (see below)",
+					"Inside statements, suffix control structure bodies"],
+				["Expression level", "Expression(s) (see below)",
+					"Function call arguments, variable command arguments, return command arguments"]
+			]},
+			{ "type": "subtitle", "text": "Statement level" },
+			[
+				"A statement is a list of commands separated by the pipe character <code>|</code>.",
+				"When executed, the commands will be run in parallel and their streams will be connected to each other."
+			],
+			{ "type": "table", "caption": "Statements", "rows": [
+				{ "type": "header", "elements": ["Name", "Syntax"]},
+				["Statement", {"type": "pre", "code": "COMMAND | COMMAND | ... | COMMAND"}]
+			]},
+			{ "type": "subtitle", "text": "Command level" },
+			[
+				"A command is a piece of code that has an input stream and an output stream.",
+				"It is differs from an expression as it does not evaluate to a one value, but can push infinitely many (or none) values to its output stream."
+			],
+			[
+				"Most notably a function call is a statement in Röda as opposed to most other programming languages."
+			],
+			{ "type": "table", "caption": "Commands", "rows": [
+				{ "type": "header", "elements": ["Name", "Syntax"]},
+				["If, unless, while, until (all work in the same way)",
+					{"type": "pre", "code": "if STATEMENT do STATEMENTS done\nif STATEMENT do STATEMENTS else STATEMENTS done"}],
+				["Suffix if, unless, while, until (all work in the same way)",
+					{"type": "pre", "code": "COMMAND if STATEMENT\nCOMMAND if STATEMENT else COMMAND"}],
+				["For", {"type": "pre", "code": [
+					"for VAR in EXPRESSION if STATEMENT do STATEMENTS done\nfor VAR in EXPRESSION do STATEMENTS done\n",
+					"for VAR if STATEMENT do STATEMENTS done\nfor VAR do STATEMENTS done"
+				]}],
+				["Suffix for", {"type": "pre", "code": [
+					"COMMAND for VAR in EXPRESSION if STATEMENT\nCOMMAND for VAR in EXPRESSION\n",
+					"COMMAND for VAR if STATEMENT\nCOMMAND for VAR"
+				]}],
+				["Break", {"type": "pre", "code": "break"}],
+				["Continue", {"type": "pre", "code": "continue"}],
+				["Try", {"type": "pre", "code": [
+					"try do STATEMENTS done\ntry do STATEMENTS catch VAR STATEMENTS done\n"
+				]}],
+				["Prefix try", {"type": "pre", "code": [
+					"try COMMAND\n"
+				]}],
+				["Return", {"type": "pre", "code": "return\nreturn EXPRESSION, EXPRESSION, ..., EXPRESSION"}],
+				["Variable command", {"type": "pre", "code": [
+					"LVAL := EXPRESSION /* local assignment */\n",
+					"LVAL = EXPRESSION /* assignment */\n",
+					"LVAL += EXPRESSION /* increment, append */\n",
+					"LVAL .= EXPRESSION /* concatenation */\n",
+					"LVAL -= EXPRESSION\n",
+					"LVAL *= EXPRESSION\n",
+					"LVAL /= EXPRESSION\n",
+					"LVAL ~= EXPRESSION, EXPRESSION, EXPRESSION, EXPRESSION, ..., EXPRESSION, EXPRESSION\n",
+					"LVAL ++\n",
+					"LVAL --\n",
+					"VAR ? /* variable existance */"
+				]}],
+				["Function call", {"type": "pre", "code": [
+					"EXPRESSION_B ARGUMENTS\n",
+					"EXPRESSION_B(ARGUMENTS)\n",
+					"[ EXPRESSION, EXPRESSION, ..., EXPRESSION ] /* list call */"
+				]}]
+			]},
+			[
+				"<code>EXPRESSION_B</code> can be any other expression than a binary operator expression."
+			],
+			[
+				"<code>LVAL</code> can be a variable name, a field expression or a subscript."
+			],
+			{ "type": "subsubtitle", "text": "Types of argument" },
+			{ "type": "table", "caption": "Arguments", "rows": [
+				{ "type": "header", "elements": ["Name", "Syntax"]},
+				["Expression argument", {"type": "pre", "code": "EXPRESSION"}],
+				["Packet arguments", {"type": "pre", "code": "* EXPRESSION"}],
+				["Named argument", {"type": "pre", "code": "VAR = EXPRESSION"}]
+			]},
+			{ "type": "subtitle", "text": "Expression level" },
+			[
+				"An expression is a piece of code that evaluates to one single value. Expressions are connected to an input stream but not to an output stream."
+			],
+			{ "type": "table", "caption": "Expressions", "rows": [
+				{ "type": "header", "elements": ["Name", "Syntax"]},
+				["Binary operator", {"type": "pre", "code": "EXPRESSION OP EXPRESSION"}],
+				["Unary operator", {"type": "pre", "code": "OP EXPRESSION"}],
+				["Field", {"type": "pre", "code": "EXPRESSION.FIELD"}],
+				["Subscript", {"type": "pre", "code": "EXPRESSION[EXPRESSION]"}],
+				["Slice", {"type": "pre", "code": [
+					"EXPRESSION[EXPRESSION:EXPRESSION]\n",
+					"EXPRESSION[EXPRESSION:]\nEXPRESSION[:EXPRESSION]\n",
+					"EXPRESSION[:] /* \"copy-operator\" */"
+				]}],
+				["New", {"type": "pre", "code": "new TYPE\nnew TYPE(EXPRESSION, EXPRESSION, ..., EXPRESSION)"}],
+				["Reflect", {"type": "pre", "code": "reflect TYPE"}],
+				["Anonymous function", {"type": "pre", "code": "{ STATEMENTS }\n{ |VAR, VAR, ..., VAR|; STATEMENTS }"}],
+				["String literal", {"type": "pre", "code": "\"...\""}],
+				["Integer literal", {"type": "pre", "code": "123"}],
+				["Floating literal", {"type": "pre", "code": "123.456"}],
+				["List literal", {"type": "pre", "code": "[ EXPRESSION, EXPRESSION, ..., EXPRESSION ]"}],
+				["Statement expression (reads single value from the output stream of the statement)", {"type": "pre", "code": "STATEMENT_B"}],
+				["Statement expression (creates a list of all values in the output stream of the statement)", {"type": "pre", "code": "[ STATEMENT_B ]"}],
+				["Expression expression", {"type": "pre", "code": "( EXPRESSION )"}]
+			]},
+			[
+				"<code>STATEMENT_B</code> refers to statements that are allowed to be used at the expression level.",
+				"These are function calls with parentheses, possibly followed by suffix control structures and arbitrary piped commands,",
+				"and other control structures than break, continue and return. Variable commands are not allowed."
+			],
+			{ "type": "pre", "code": [
+				"/* Valid statement expressions (as arguments to print): */\n",
+				"print( f() )\n",
+				"print( f(1, 2) )\n",
+				"print( f() | g() )\n",
+				"print( f(x) for x in l | g() ) /* g should return only one value */\n",
+				"print( f() if [ c ] else g() )\n",
+				"print( if [ c ] do f() else g() done )\n",
+				"print( [f()] ) /* creates a list of all return values */\n",
+				"print( [f(x) for x in l] )\n",
+				"print( [f() | g(x) for x] )\n",
+				"print( [for x in l do f(x); g(x) done] )\n\n",
+				"/* Invalid statement expressions: */\n",
+				"print( f ) /* not a function call, prints string representation of f */\n",
+				"print( f 1, 2 ) /* syntax error */\n",
+				"print( f | g ) /* syntax error */\n",
+				"print( f x for x in l | g() ) /* syntax error */\n",
+				"print( break ) /* syntax error */\n",
+				"print( f() | break ) /* runtime error */\n",
+				"print( a := pull() ) /* syntax error */"
+			]},
+			{ "type": "subsubtitle", "text": "Operator precedence table" },
+			{ "type": "table", "caption": "Operator precedencies", "rows": [
+				{ "type": "header", "elements": ["Precedence level", "Operators"]},
+				["1", "<code>.</code>, <code>[]</code>, <code>[:]</code>, <code>is</code>"],
+				["2", "<code>-</code> (unary), <code>not</code> (unary), <code>b_not</code> (unary), <code>#</code> (unary), <code>typeof</code> (unary)"],
+				["3", "<code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>"],
+				["4", "<code>+</code>, <code>-</code>"],
+				["5", "<code>b_and</code>, <code>b_or</code>, <code>b_shiftl</code>, <code>b_shiftr</code>, <code>b_shiftrr</code>"],
+				["6", "<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>in</code>"],
+				["7", "<code>&amp;</code>"],
+				["8", "<code>..</code>"],
+				["9", "<code>=</code>, <code>!=</code>, <code>=~</code>"],
+				["10", "<code>and</code>, <code>or</code>, <code>xor</code>"]
+			]}
+		]
+	}
+]

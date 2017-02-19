@@ -1,0 +1,29 @@
+| block title self.title end |
+
+| block content |
+	<div class="funclist">
+		<h2>Contents</h2>
+		<ul>
+		| for page in guide |
+			<li><a href="|root page.path|">|page.title|</a></li>
+		| end |
+		</ul>
+	</div>
+	<div class="funcdoc">
+		<h2>|self.title|</h2>
+		
+		| for paragraph in self.content |
+			| include "templates/_paragraph.plan" |
+		| end |
+		<div class="page-nav">
+		| ifdef self.next |
+			<div style="float:right;">Next: <a href="|root guide_map[self.next].path|">|guide_map[self.next].title|</a></div>
+		| end |
+		| ifdef self.previous |
+			Previous: <a href="|root guide_map[self.previous].path|">|guide_map[self.previous].title|</a>
+		| end |
+		</div>
+	</div>
+| end |
+
+| include "templates/_page.plan" |

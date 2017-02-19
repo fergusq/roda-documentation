@@ -1,0 +1,1718 @@
+[
+	{
+		"_comment": "=== SPECIAL VARIABLES ===",
+		
+		"name": "self",
+		"usage": "self",
+		"description": [
+			[
+				"This special variable is available in default values of fields and the bodies of methods inside record definitions.",
+				"It is a reference to the instance of the record that will hold the values."
+			]
+		],
+		"see_also": [],
+		"categories": ["Special variables"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>self</code> can be used to access the fields of a record instance.",
+				"code": [
+					"record StringBox(val) {\n    data : string = val\n\n",
+					"    function append(str : string) {\n        self.data .= str\n    }\n\n",
+					"    function asString() {\n        return \"<StringBox '\"..self.data..\"'>\"\n    }\n}",
+					"\n\n",
+					"box = new StringBox(\"my value\")\nbox.append(\" is great\")\nprint(box.asString())"
+				]
+			}
+		]
+	},
+	{
+		"_comment": "=== CONTROL STRUCTURES ===",
+		
+		"name": "for",
+		"usage": [
+			"/* iterating a list */\nfor var in val do\n   stmts\ndone",
+			"stmt for var in val",
+			"",
+			"/* iterating values of a list that match a condition */\nfor var in val if cond do\n   stmts\ndone",
+			"stmt for var in val if cond",
+			"",
+			"/* reading values from the stream */\nfor var do\n   stmts\ndone",
+			"stmt for var",
+			"",
+			"/* reading values from the stream, evaluating the body only if the value matches a condition */\nfor var if cond do\n   stmts\ndone",
+			"stmt for var if cond"
+		],
+		"description": [
+			[
+				"<code>for</code> is one of the most useful control structures in the Röda language.",
+				"It can be used to iterate values of a list as well as reading values from the stream."
+			],
+			[
+				"If needed, a condition can be supplied in order to evaluate the body for only some of the values.",
+				"This is only syntax sugar for an if statement that would be inside the body."
+			],
+			[
+				"It is possible to specify multiple variable names. In this case, many values will be read from the list or stream. (See example 4)"
+			],
+			[
+				"For without a list is essentially equivalent to a <code>while tryPull</code> construct:"
+			],
+			"<pre><code class=\"rodacode\">while tryPull(var) do\n    stmts\ndone</code></pre>",
+			"As most of the other control structures, <code>for</code> has a suffix form."
+		],
+		"see_also": ["tryPull"],
+		"categories": ["Control structures"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>for</code> can be used to iterate over values of a list.",
+				"code": "fruits := [\"apple\", \"banana\", \"pineapple\", \"lemon\"]\nfor fruit in fruits do\n    print(\"I like \"..fruit..\".\")\ndone"
+			},
+			{
+				"name": "Example 2",
+				"description": "There can be a condition, so that only some of the values will be handled.",
+				"code": "for fruit in fruits if [ #fruit <= 5 ] do\n    print(\"I like \"..fruit..\", it is nice and short.\")\ndone"
+			},
+			{
+				"name": "Example 3",
+				"description": "<code>for</code> can be used to read values from a stream.",
+				"code": "linenum := 0\nreadLines(\"file.txt\") | for line do\n    print(linenum..\" \"..line)\n    linenum ++\ndone"
+			},
+			{
+				"name": "Example 4",
+				"description": "Multiple variables may be specified to handle multiple values at the same time.",
+				"code": "for a, b in [1, 2, 3, 4, 5, 6] do\n    print(a*b)\ndone\n/* prints:\n2\n12\n30\n*/"
+			},
+			{
+				"name": "Example 5",
+				"description": "<code>for</code> can be used together with <code>interleave</code> to iterate multiple lists at the same time.",
+				"code": [
+					"cities := [\"New York\", \"Roma\", \"Turku\"]\n",
+					"countries := [\"United States\", \"Italy\", \"Finland\"]\n",
+					"interleave(cities, countries) | for city, country do\n",
+					"    print(city..\" is in \"..country)\n",
+					"done"
+				]
+			},
+			{
+				"name": "Example 6",
+				"description": "In its suffix form, <code>for</code> can be used like a map function found in functional languages.",
+				"code": "readLines(\"filenames.txt\") | mimeType(file) for file | for mimetype do\n    print(\"I found a \"..mimetype..\" file!\")\ndone"
+			},
+			{
+				"name": "Example 7",
+				"description": "In conditional statements, <code>for</code> can be used to check that the condition is true for all items in a list.",
+				"code": "if fileExists(file) for file in files do\n    print(\"All files exist!\")\ndone"
+			}
+		]
+	},
+	{
+		"name": "while",
+		"usage": [
+			"while cond do\n    stmts\ndone",
+			"",
+			"while cond do\n    stmts\nelse\n    stmts\ndone",
+			"",
+			"stmt while cond"
+		],
+		"description": [
+			"The <code>while</code> loop can be used to repeat a block of code until a condition fails.",
+			[
+				"The condition must be a statement, not an expression. It may be a function call or another control structure.",
+				"To use an expression as a condition, can one use either the <code>push</code> function or a list."
+			],
+			"The else block will be evaluated once if the condition is not met when it is first evaluated.",
+			"The opposite variant of this loop is the <code>until</code> loop."
+		],
+		"see_also": ["until"],
+		"categories": ["Control structures"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "This code can be found in many servers made in Röda.",
+				"code": "while true do\n    try server_obj.update()\ndone"
+			}
+		]
+	},
+	{
+		"name": "until",
+		"usage": [
+			"until cond do\n    stmts\ndone",
+			"",
+			"until cond do\n    stmts\nelse\n    stmts\ndone",
+			"",
+			"stmt until cond"
+		],
+		"description": [
+			"The <code>until</code> loop can be used to repeat a block of code until a condition is true.",
+			[
+				"The condition must be a statement, not an expression. It may be a function call or another control structure.",
+				"To use an expression as a condition, can one use either the <code>push</code> function or a list."
+			],
+			"The else block will be evaluated once if the condition is met when it is first evaluated.",
+			"The opposite variant of this loop is the <code>while</code> loop."
+		],
+		"see_also": ["while"],
+		"categories": ["Control structures"],
+		"examples": []
+	},
+	{
+		"name": "if",
+		"usage": [
+			"if cond do\n    stmts\ndone",
+			"",
+			"if cond do\n    stmts\nelse\n    stmts\ndone",
+			"",
+			"stmt if cond"
+		],
+		"description": [
+			"The <code>if</code> statement can be used to evaluate code when a condition is true.",
+			[
+				"The condition must be a statement, not an expression. It may be a function call or another control structure.",
+				"To use an expression as a condition, can one use either the <code>push</code> function or a list."
+			],
+			"The opposite variant of this statement is the <code>unless</code> statement."
+		],
+		"see_also": ["unless"],
+		"categories": ["Control structures"],
+		"examples": []
+	},
+	{
+		"name": "unless",
+		"usage": [
+			"unless cond do\n    stmts\ndone",
+			"",
+			"unless cond do\n    stmts\nelse\n    stmts\ndone",
+			"",
+			"stmt unless cond"
+		],
+		"description": [
+			"The <code>unless</code> statement can be used to evaluate code when a condition is false.",
+			[
+				"The condition must be a statement, not an expression. It may be a function call or another control structure.",
+				"To use an expression as a condition, can one use either the <code>push</code> function or a list."
+			],
+			"The opposite variant of this statement is the <code>if</code> statement."
+		],
+		"see_also": ["if"],
+		"categories": ["Control structures"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "This code will add <code>cookie_name</code> to the cookie list unless it is already there.",
+				"code": "cookies += cookie_name unless [ cookie_name in cookies ]"
+			}
+		]
+	},
+	{
+		"name": "break",
+		"usage": "break",
+		"description": [
+			"This command stops the evaluation of the current <code>for</code>, <code>while</code> or <code>until</code> loop and jumps to the next command after it."
+		],
+		"see_also": ["continue"],
+		"categories": ["Control structures"],
+		"examples": []
+	},
+	{
+		"name": "continue",
+		"usage": "continue",
+		"description": [
+			"This command stops the evaluation of the current <code>for</code>, <code>while</code> or <code>until</code> loop body."
+		],
+		"see_also": ["break"],
+		"categories": ["Control structures"],
+		"examples": []
+	},
+	{
+		"_comment": "=== PUSH AND PULL FUNCTIONS ===",
+		
+		"name": "push",
+		"usage": "push(val...)",
+		"description": [
+			[
+				"This function pushes its arguments to its output stream. ",
+				"It can be used as a starting point of a pipeline operation (example 1) or to return values from a function (example 2).",
+				"It differs from the return construct as it does not stop the evaluation of statements of the function."
+			],
+			"If no arguments are given, nothing will happen.",
+			[
+				"Calling a list of values is equivalent to pushing them to to the stream using this function.",
+				"This means that statements <code>[a, b, c]()</code> and <code>push(a, b, c)</code> do the exactly same thing.",
+				"Therefore, this function could be implemented as below:"
+			],
+			"<pre><code class=\"rodacode\">function push(val...) {\n    val()\n}</code></pre>",
+			"This fact is often abused in conditions of if and while statements."
+		],
+		"see_also": ["pull", "[ ]", "return"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>push</code> used as a starting point of a pipeline operation: splits a string and stores every word in a file.",
+				"code": "push(str) | split(_, sep=\"\\\\s\") | replace(\"\\\\W\", \"\") | writeLines(\"words.txt\")"
+			},
+			{
+				"name": "Example 2",
+				"description": "<code>push</code> used to push values to the output stream of the current function. This is useful when the function returns many values.",
+				"code": "function duplicate {\n    for val do\n        push(val, val)\n    done\n}"
+			}
+		]
+	},
+	{
+		"name": "[ ]",
+		"usage": "[ val... ]",
+		"description": [
+			[
+				"In Röda, a list can be 'called' to push its elements to the output stream.",
+				"A popular idiom is to use this feature in conditional statements like <code>if</code> and <code>while</code>."
+			]
+		],
+		"see_also": ["push"],
+		"categories": ["Idioms"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "A list is often used in conditions.",
+				"code": "if [ #args < 3 ] do\n    errprint(\"argument underflow: at least 3 arguments required\")\ndone"
+			}
+		]
+	},
+	{
+		"name": "pull",
+		"usage": "pull(&var...)",
+		"description": [
+			[
+				"This functions takes values from the input stream and stores them to the argument variables.",
+				"The function will define a new variable in the scope where it is invoked, ie. it can't be used to update values of the variables, only to create new.",
+				"If no arguments are given, the function will take one value from the input stream and push it to its output stream."
+			],
+			[
+				"If the stream is closed, the <code>empty stream</code> error will be raised."
+			],
+			[
+				"See examples section for a comprehensive look at the uses of this function."
+			]
+		],
+		"see_also": ["tryPull", "push", "peek", "for"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>pull</code> can be used to retrieve values from the input stream of the current function.",
+					"The <code>swap</code> function takes two values and swaps them."
+				],
+				"code": "function swap {\n    pull(a, b)\n    push(b, a)\n}"
+			},
+			{
+				"name": "Example 2",
+				"description": "<code>pull</code> can be used to retrieve values from the stream. The code parses data from a file.",
+				"code": "persons := [];\nreadLines(\"persons.txt\") | for id do\n    pull(pname, address)\n    persons += new Person(pname, address)\ndone"
+			},
+			{
+				"name": "Example 3",
+				"description": "Without arguments, <code>pull</code> is identical to <code>head(1)</code>.",
+				"code": "push(1, 2, 3) | pull() | print(x) for x /* prints 1 */"
+			},
+			{
+				"name": "Example 4",
+				"description": "<code>pull</code> can be used to store return values of a function that returns more than one value.",
+				"code": "function composeMusic() {\n    /* ... */\n    return generatedMelody, generatedChords\n}\n\n/* ... */\n\ncomposeMusic() | pull(melody, chords)"
+			},
+			{
+				"name": "Example 5",
+				"description": [
+					"The 'if pull' construct: used when creating a variable that can be either X or Y depending on a condition.",
+					"For example, the status code format is different in different protocols, so the value of <code>status_code</code> depends on a condition."
+				],
+				"code": "if [ self.protocol = \"HTTP/1.0\" ]; do\n    push(\"302 Found\")\nelse\n    push(\"303 See Other\")\ndone | pull(status_code)"
+			}
+		]
+	},
+	{
+		"name": "tryPull",
+		"usage": "tryPull(&first_var, &other_vars...)",
+		"description": [
+			[
+				"This function is similar to <code>pull</code>,",
+				"but will push either <code>TRUE</code> or <code>FALSE</code> to its output stream every time it tries to take a value from the stream.",
+				"Specifically, if the pull operation fails because the stream is closed, the output will be <code>FALSE</code>, otherwise <code>TRUE</code>.",
+				"No <code>empty stream</code> errors will be raised at any point."
+			],
+			"In contrast to <code>pull</code>, <code>tryPull</code> can't be used without arguments.",
+			[
+				"When used as the condition of a while loop, the resulting construct is equivalent to a for loop.",
+				"If only one value needs to be taken from the stream, this function can be used as a condition of an if statement.",
+				"In most cases the use of this function can be avoided with for loops."
+			]
+		],
+		"see_also": ["pull", "for"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>tryPull</code> can be used to optionally take one value from the stream.",
+				"code": "readLines(\"file.txt\") | if tryPull(line) do\n    print(\"The first line is: \"..line)\nelse\n    print(\"The file is empty\")\ndone"
+			},
+			{
+				"name": "Example 2",
+				"description": "The <code>while tryPull</code> construct is equivalent to a for loop.",
+				"code": "seq(1, 10) | while tryPull(n) do\n    print(n..\"^2 = \"..n*n)\ndone"
+			}
+		]
+	},
+	{
+		"name": "peek",
+		"usage": "peek(&var...)",
+		"description": [
+			[
+				"This function is similar to <code>pull</code>, but does not remove the item from the stream.",
+				"Instead, it pushes it to a queue, and it will be taken from there next time the <code>pull</code> function is called.",
+				"If there is already a value in the queue, this function will return it."
+			]
+		],
+		"see_also": ["tryPeek", "pull"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "tryPeek",
+		"usage": "tryPeek(&first_var, &other_vars...)",
+		"description": [
+			[
+				"This function is similar to <code>tryPull</code>, but does not remove the item from the stream.",
+				"It works like <code>peek</code>,",
+				"but will push either <code>TRUE</code> or <code>FALSE</code> to its output stream every time it tries to read a value from the stream.",
+				"Specifically, if the operation fails because the stream is closed, the output will be <code>FALSE</code>, otherwise <code>TRUE</code>.",
+				"No <code>empty stream</code> errors will be raised at any point."
+			],
+			"In contrast to <code>peek</code>, <code>tryPeek</code> can't be used without arguments."
+		],
+		"see_also": ["peek", "tryPull"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "return",
+		"usage": "return val...",
+		"description": [
+			"This statement pushes the given values to the output stream and then stops the evaluation of the current function."
+		],
+		"see_also": ["push"],
+		"categories": ["Control structures"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"In this example we define a function that will return either <code>n</code> or <code>-n</code>.",
+					"If the first return is evaluated, the function will exit and the second will never be evaluated."
+				],
+				"code": "function abs(n : number) {\n    return n if [ n >= 0 ]\n    return -n\n}"
+			}
+		]
+	},
+	{
+		"name": "print",
+		"usage": "print(first_val, other_vals...)",
+		"description": [
+			"This function pushes the values given as arguments and a string containing a newline character to its output stream.",
+			"<code>print</code> exists for purely practical reasons: it is handy when it is required to output lines of text (see examples).",
+			"Example implementation:",
+			"<pre><code class=\"rodacode\">function print(first_val, other_vals...) {\n    push(first_val)\n    other_vals()\n    push(\"\\n\")\n}</code></pre>"
+			
+		],
+		"see_also": ["push"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>print</code> can be used to print text to stdout when connected to the output stream of the main function."
+				],
+				"code": "main {\n    print(\"Hello world!\")\n}"
+			},
+			{
+				"name": "Example 2",
+				"description": [
+					"<code>print</code> can be used to print lines to files."
+				],
+				"code": "{\n    print(\"This will be the first line of the file\")\n    print(\"And this the second\")\n} | writeLines(\"file.txt\")"
+			}
+		]
+	},
+	{
+		"name": "interleave",
+		"usage": "interleave(first_list, other_lists...)",
+		"description": [
+			[
+				"This function pushes the values of the lists to its output stream so that <i>i</i>th value is taken from the (<i>i</i> mod <i>n</i>)th list,",
+				"where <i>n</i> is the number of lists given as arguments."
+			],
+			"All the lists given must have the same number of elements.",
+			"A possible implementation:",
+			{ "type": "pre", "code": [
+				"function interleave(x : list...) {\n",
+				"	error(\"illegal use of interleave: all lists must have the same size\") for a in x[1:] if [ #x[0] != #a ]\n",
+				"	\n",
+				"	seq(0, #x[0]-1) | for i do\n",
+				"		push(a[i]) for a in x\n",
+				"	done\n",
+				"}"
+			] }
+		],
+		"see_also": ["for"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>for</code> can be used together with <code>interleave</code> to iterate multiple lists at the same time.",
+				"code": [
+					"cities := [\"New York\", \"Roma\", \"Turku\"]\n",
+					"countries := [\"United States\", \"Italy\", \"Finland\"]\n",
+					"interleave(cities, countries) | for city, country do\n",
+					"    print(city..\" is in \"..country)\n",
+					"done"
+				]
+			}
+		]
+	},
+	{
+		"_comment": "=== HEAD, TAIL AND IDENTITY ===",
+		
+		"name": "head",
+		"usage": [ "head()", "head(n)" ],
+		"description": [
+			[
+				"This function pulls <code>n</code> values from its input stream and pushes them to its output stream.",
+				"It can be used to limit the number of items in the stream."
+			],
+			"When no arguments are given, <code>head</code> will pull and push exactly one value.",
+			"Example implementation:",
+			"<pre><code class=\"rodacode\">function head(n : integer) {\n    for _ in [seq(1, n)] do\n        pull()\n    done\n}</code></pre>"
+		],
+		"see_also": ["tail", "identity"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>head</code> can be used to read only the first line of a file.",
+				"code": "password := readLines(\"password.txt\") | head(1)"
+			}
+		]
+	},
+	{
+		"name": "tail",
+		"usage": [ "tail()", "tail(n)" ],
+		"description": [
+			[
+				"This function pulls all the values from its input stream and pushes <code>n</code> last of them to its output stream.",
+				"It can be used to limit the number of items in the stream."
+			],
+			"When no arguments are given, <code>tail</code> will push exactly one value, the last.",
+			"Example implementation:",
+			"<pre><code class=\"rodacode\">function tail(n : integer) {\n    a := []\n    a += x for x\n    a[-n:]()\n}</code></pre>"
+		],
+		"see_also": ["head", "identity"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "identity",
+		"usage": "identity()",
+		"description": [
+			"This function pulls values from its input stream and pushes them to its output stream immediately.",
+			"Example implementation:",
+			"<pre><code class=\"rodacode\">function identity {\n    push(x) for x\n}</code></pre>"
+		],
+		"see_also": ["head", "tail"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>identity</code> can be used in a closure to let the stream go by.",
+					"This is useful for example when a value must be prepended to the stream."
+				],
+				"code": "readLines(\"file.txt\") | { push(\"START\"); identity(); push(\"END\") }() | print(line) for line"
+			}
+		]
+	},
+	{
+		"_comment": "=== TRUE AND FALSE ===",
+		
+		"name": "true",
+		"usage": "true()",
+		"description": [
+			"This function returns value <code>TRUE</code>. It is often used as the condition of a while loop to create an infinite loop.",
+			"The counterpart of this function is <code>false</code>."
+		],
+		"see_also": ["false", "TRUE"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>true</code> can be used to create an infinite loop.",
+				"code": "while true do\n    try server_obj.update()\ndone"
+			}
+		]
+	},
+	{
+		"name": "false",
+		"usage": "false()",
+		"description": [
+			"This function returns value <code>FALSE</code>.",
+			"The counterpart of this function is <code>true</code>."
+		],
+		"see_also": ["true", "FALSE"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "TRUE",
+		"usage": "TRUE",
+		"description": [
+			"This constant is a boolean value that is used as a result of a logical expression that is true."
+		],
+		"see_also": ["FALSE", "true"],
+		"categories": ["Constants"],
+		"examples": []
+	},
+	{
+		"name": "FALSE",
+		"usage": "FALSE",
+		"description": [
+			"This constant is a boolean value that is used as a result of a logical expression that isn't true."
+		],
+		"see_also": ["TRUE", "false"],
+		"categories": ["Constants"],
+		"examples": []
+	},
+	{
+		"_comment": "=== ENV and GETENV ===",
+		
+		"name": "ENV",
+		"usage": "ENV",
+		"description": [
+			"This constant is a map that contains the environment variables present when the interpreter was initialized."
+		],
+		"see_also": ["getenv"],
+		"categories": ["Constants"],
+		"examples": []
+	},
+	{
+		"name": "getenv",
+		"usage": "getenv(varname)",
+		"description": [
+			"This function returns the value of the given environment value."
+		],
+		"see_also": ["ENV"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== NAME AND UNDEFINE ===",
+		
+		"name": "name",
+		"usage": "name(&var...)",
+		"description": [
+			"This function returns strings that contain the names of the variables that were given as arguments.",
+			"The abuse of this function does not have any good outcomes."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "This function can promote any variable to the global scope, so that it can be used from every function.",
+				"code": "function export(&var) {\n    assignGlobal(name(var), var)\n}"
+			},
+			{
+				"name": "Example of abuse",
+				"description": "In this example we create a function that can transform any string function to a function that takes a reference instead of a string.",
+				"code": [
+					"function transform(&f) {\n    f_ := push(f)\n    f = { |&n|; f_(name(n)) }\n}\n\n/* ... */\n\n",
+					"transform(print)\nprint(Hello_world) /* prints Hello_world */\n\ntransform(exec)\nexec(poweroff) /* begins shutdown */\n"
+				]
+			}
+		]
+	},
+	{
+		"name": "undefine",
+		"usage": "undefine(&var...)",
+		"description": [
+			"This function destroys all the given variables in the scope where it is called."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>undefine</code> can be used together with the <code>?</code>-operator to destroy a variable at this scope and all its parents.",
+				"code": "undefine var while var?"
+			}
+		]
+	},
+	{
+		"_comment": "=== SEQ ===",
+		
+		"name": "seq",
+		"usage": "seq(from, to)",
+		"description": [
+			"This function pushes all integers in range <code>[from, to]</code> to its output stream."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>seq</code> can be used to do an action a certain amount of times.",
+				"code": "seq(1, n) | print(\"This is printed n times.\") for _"
+			},
+			{
+				"name": "Example 2",
+				"description": "<code>seq</code> is useful when iterating list indices.",
+				"code": "seq(0, #l-1) | for i do\n    print(\"l[\"..i..\"] = \"..l[i])\ndone"
+			}
+		]
+	},
+	{
+		"name": "currentTime",
+		"usage": "currentTime()",
+		"description": [
+			[
+				"Returns the milliseconds between the current time and midnight, January 1, 1970."
+			]
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== ASSIGN FUNCTIONS ===",
+		
+		"name": "assignGlobal",
+		"usage": "assignGlobal(varname, val)",
+		"description": [
+			[
+				"Sets the value of the global variable named <code>varname</code> to <code>val</code>."
+			]
+		],
+		"see_also": ["createGlobal"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>assignGlobal</code> is often used to create global variables in top-level code blocks.",
+				"code": "{\n    assignGlobal(\"PI\", 3.14)\n}\n\nfunction circleArea(radius) {\n    return PI*radius*radius\n}"
+			}
+		]
+	},
+	{
+		"name": "createGlobal",
+		"usage": "createGlobal(varname, val)",
+		"description": [
+			[
+				"Sets the value of the global variable named <code>varname</code> to <code>val</code>.",
+				"If the variable already exists, however, this operation will not be not performed and the old value will be preserved."
+			]
+		],
+		"see_also": ["assignGlobal"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== FILE FUNCTIONS ===",
+		
+		"name": "readLines",
+		"usage": "readLines(first_filename, other_filenames...)",
+		"description": [
+			[
+				"This function reads one or more file and pushes lines in them to its output stream.",
+				"The end of line characters will be stripped from the lines before pushing."
+			]
+		],
+		"see_also": ["writeStrings"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "The code prints the content of a file with line numbers.",
+				"code": "linenum := 0\nreadLines(\"file.txt\") | for line do\n    print(linenum..\" \"..line)\n    linenum ++\ndone"
+			}
+		]
+	},
+	{
+		"name": "writeStrings",
+		"usage": "writeStrings(filename)",
+		"description": [
+			"This function takes strings from its input stream and writes them to a file specified."
+		],
+		"see_also": ["readLines"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "fileExists",
+		"usage": "fileExists(filename...)",
+		"description": [
+			[
+				"For every given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
+				"If the file exists, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
+			]
+		],
+		"see_also": ["isFile", "isDirectory", "fileLength", "mimeType"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "fileLength",
+		"usage": "fileLength(filename...)",
+		"description": [
+			[
+				"For every given file name, this function pushes an integer to its output stream.",
+				"The integer represents the size of the file in bytes."
+			]
+		],
+		"see_also": ["mimeType", "isFile", "isDirectory", "fileExists"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "isFile",
+		"usage": "isFile(filename...)",
+		"description": [
+			[
+				"For every given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
+				"If the file is not a directory, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
+			]
+		],
+		"see_also": ["isDirectory", "fileExists", "fileLength", "mimeType"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "isDirectory",
+		"usage": "isDirectory(filename...)",
+		"description": [
+			[
+				"For every given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
+				"If the file is a directory, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
+			]
+		],
+		"see_also": ["isFile", "fileExists", "fileLength", "mimeType"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "mimeType",
+		"usage": "mimeType(filename...)",
+		"description": [
+			[
+				"For every given file name, this function pushes a string to its output stream.",
+				"The string represents the mime type of the file."
+			]
+		],
+		"see_also": ["fileLength", "isFile", "isDirectory", "fileExists"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "cd",
+		"usage": "cd(dirname)",
+		"description": [
+			[
+				"Changes the current working directory.",
+				"All file paths used with file-related functions are relative to this directory."
+			]
+		],
+		"see_also": ["pwd"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "pwd",
+		"usage": "pwd()",
+		"description": [
+			[
+				"Returns the current working directory."
+			]
+		],
+		"see_also": ["cd"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "ls",
+		"usage": "ls()",
+		"description": [
+			[
+				"For each file in the current working directory, this function pushes its absolute path to the stream."
+			]
+		],
+		"see_also": ["cd"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== RANDOM FUNCTIONS ===",
+	
+		"name": "randomBoolean",
+		"usage": "randomBoolean(&var...)",
+		"description": [
+			[
+				"Inserts randomly either <code>TRUE</code> or <code>FALSE</code> to the given variables.",
+				"If no variables are given, this function pushes one random boolean value to its output stream."
+			]
+		],
+		"see_also": ["randomInteger", "randomFloating"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>randomBoolean</code> can be used as the condition of an if statement to execute code at 50% chance.",
+				"code": "if randomBoolean() do\n    print(\"Hey!\")\ndone"
+			}
+		]
+	},
+	{
+		"name": "randomInteger",
+		"usage": "randomInteger(&var...)",
+		"description": [
+			[
+				"Inserts random integer values to the given variables.",
+				"If no variables are given, this function pushes one random integer value to its output stream."
+			]
+		],
+		"see_also": ["randomFloating", "randomBoolean"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>randomInteger</code> can be used to select a random value from a list.",
+				"code": "function selectRandomly(l) {\n    return l[randomInteger() % #l]\n}"
+			}
+		]
+	},
+	{
+		"name": "randomFloating",
+		"usage": "randomFloating(&var...)",
+		"description": [
+			[
+				"Inserts random floating pointer values to the given variables.",
+				"If no variables are given, this function pushes one random floating pointer value to its output stream."
+			]
+		],
+		"see_also": ["randomInteger", "randomBoolean"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== ERROR FUNCTIONS ===",
+	
+		"name": "error",
+		"usage": "error(message)\nerror(error_obj)",
+		"description": [
+			[
+				"Raises a new error. If the argument of the function is a string, a new Error object will be created.",
+				"If the argument is an Error, that object will be used."
+			]
+		],
+		"see_also": ["Error", "errprint"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>error</code> is used below to build an assert function.",
+				"code": "function assert(condition, message=\"assert failed\") {\n    error(message) unless [ condition ]\n}"
+			}
+		]
+	},
+	{
+		"name": "errprint",
+		"usage": "errprint(strings...)",
+		"description": [
+			[
+				"Pushes the given strings to the standard error stream.",
+				"If no strings are given, this function will read values from its input stream and pushen them to stderr."
+			],
+			[
+				"This function can be used to print values in a function that is not connected to the standard output stream.",
+				"In the future, a function may be designed to directly push values to stdout also."
+			]
+		],
+		"see_also": ["errprint"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "Error",
+		"usage": [
+			"record Error {",
+			"    message : string",
+			"    stack : list&lt;&lt;string&gt;&gt;",
+			"    javastack : list&lt;&lt;string&gt;&gt;",
+			"    causes : list&lt;&lt;Error&gt;&gt;\n}"
+		],
+		"description": [
+			[
+				"This record class is the base class of all errors.",
+				"Every time an error is raised, an Error object is created."
+			]
+		],
+		"see_also": ["error"],
+		"categories": ["Record classes"],
+		"examples": []
+	},
+	{
+		"name": "IllegalArgumentsError",
+		"usage": [
+			"record IllegalArgumentsError : Error {}"
+		],
+		"description": [
+			[
+				"This error is raised when a function or an operator receives a wrong number of arguments or an argument that has a wrong format."
+			]
+		],
+		"see_also": ["Error"],
+		"categories": ["Record classes"],
+		"examples": []
+	},
+	{
+		"name": "TypeMismatchError",
+		"usage": [
+			"record TypeMismatchError : IllegalArgumentsError {}"
+		],
+		"description": [
+			[
+				"This error is raised when a function or an operator receives an argument that has wrong type.",
+				"For example, <code>\"a\"+\"b\"</code> would raise this error, as the <code>+</code> operator accepts only numbers."
+			]
+		],
+		"see_also": ["IllegalArgumentsError"],
+		"categories": ["Record classes"],
+		"examples": []
+	},
+	{
+		"name": "OutOfBoundsError",
+		"usage": [
+			"record OutOfBoundsError : IllegalArgumentsError {}"
+		],
+		"description": [
+			[
+				"This is a special case of OutOfBoundsError, where the given value is not in the valid range.",
+				"A most common reason for raising this error is using a wrong index with a list."
+			]
+		],
+		"see_also": ["IllegalArgumentsError"],
+		"categories": ["Record classes"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "A <code>OutOfBoundsError</code> is raised when a too great index is used.",
+				"code": "l := [1, 2]\nprint(l[2]) /* [OutOfBoundsError] list index out of bounds: index 2, size 2 */"
+			}
+		]
+	},
+	{
+		"name": "FullStreamError",
+		"usage": [
+			"record FullStreamError : Error {}"
+		],
+		"description": [
+			[
+				"This error is raised when a value is pushed to a stream that is full. Currently the only cituation where this can happen is",
+				"statement expressions, eg. function calls, when the statement returns more than one value."
+			]
+		],
+		"see_also": ["Error", "EmptyStreamError"],
+		"categories": ["Record classes"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "A <code>FullStreamError</code> is raised when a function returns more than one value at the expression level.",
+				"code": "print(seq(1, 100))"
+			}
+		]
+	},
+	{
+		"name": "EmptyStreamError",
+		"usage": [
+			"record EmptyStreamError : Error {}"
+		],
+		"description": [
+			[
+				"This error is raised when it is tried to pull values from a closed stream.",
+				"That usually happens when a function doesn't return enough values."
+			]
+		],
+		"see_also": ["Error", "FullStreamError"],
+		"categories": ["Record classes"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "An <code>EmptyStreamError</code> is raised when a function doesn't return values at the expression level.",
+				"code": "print(seq(1, 0))"
+			},
+			{
+				"name": "Example 2",
+				"description": "An <code>EmptyStreamError</code> is raised when it is tried to pull too many values.",
+				"code": "push(1, 2) | pull(a, b, c)"
+			}
+		]
+	},
+	{
+		"name": "UnknownNameError",
+		"usage": [
+			"record UnknownNameError : Error {}"
+		],
+		"description": [
+			[
+				"This error is raised when a variable, type or field does not exist."
+			]
+		],
+		"see_also": ["Error"],
+		"categories": ["Record classes"],
+		"examples": []
+	},
+	{
+		"name": "LeakyPipeError",
+		"usage": [
+			"record LeakyPipeError : Error {}"
+		],
+		"description": [
+			[
+				"This error is raised when a break, continue or return statement is used inside a pipeline."
+			]
+		],
+		"see_also": ["Error"],
+		"categories": ["Record classes"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"The function below will raise a <code>LeakyPipeError</code>, as the return statement is inside a pipeline.",
+					"It is also flawed because it does not return anything if no line matches the regular expression.",
+					"A fixed version is left as an exercise for the reader."
+				],
+				"code": "function firstMatchIn(file, regex) {\n    readLines(file) | for line do\n        return line if [ line =~ regex ]\n    done\n}"
+			}
+		]
+	},
+	{
+		"_comment": "=== STRING FUNCTIONS ===",
+		
+		"name": "split",
+		"usage": "split(strings..., sep=\" \")",
+		"description": [
+			[
+				"This function splits the given strings.",
+				"The resulting strings are pushed to the output stream.",
+				"The separator is optional and can be any regular expression. The default separator is a space."
+			],
+			[
+				"If no arguments are given, this function will read values from the input stream."
+			]
+		],
+		"see_also": ["splitMany", "match"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>split</code> can be used retrieve space-separated data from the input stream.",
+				"code": "readLines(\"fruits.txt\") | split() | for fruit do\n    print(\"I know what \"..fruit..\" is!\")\ndone"
+			}
+		]
+	},
+	{
+		"name": "splitMany",
+		"usage": "splitMany(strings..., sep=\" \")",
+		"description": [
+			[
+				"This function splits the given strings.",
+				"A list of resulting strings is pushed to the output stream.",
+				"(<code>split</code> pushed them straight without creating a list.)",
+				"The separator is optional and can be any regular expression. The default separator is a space."
+			],
+			[
+				"If no arguments are given, this function will read values from the input stream."
+			]
+		],
+		"see_also": ["split", "match"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>splitMany</code> can be used to parse comma-separated data. The rows are important, so <code>split</code> can't be used.",
+				"code": "readLines(\"persons.txt\") | splitMany(sep=\",\") | for person do\n    person() | pull(first_name, last_name, email)\n    /* ... */\ndone"
+			}
+		]
+	},
+	{
+		"name": "replace",
+		"usage": "replace(pattern, replacement, patterns_and_replacements...)",
+		"description": [
+			[
+				"This function pulls strings from its input stream, performs the given operations and then pushes the resulting strings to its output stream.",
+				"The number of arguments must be even.",
+				"Each pair of arguments contains a pattern (regular expression) and a replacement string.",
+				"For each pair, the first occurance of pattern is replaced with the replacement,",
+				"and the operation is repeated for the rest of the string after the replacement."
+			],
+			"As the performed operation is equivalent to the one performed by <code>~=</code>, this function could be implemented as below:",
+			{ "type": "pre", "code": [
+				"function replace(pattern, replacement, ps_a_rs...) {\n",
+				"    for str do\n",
+				"         str ~= pattern, replacement, *ps_a_rs\n",
+				"         push(str)\n",
+				"    done\n",
+				"}"
+			]}
+		],
+		"see_also": ["search", "match"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "search",
+		"usage": "search(first_pattern, other_patterns...)",
+		"description": [
+			[
+				"This function pulls strings from its input stream.",
+				"Then it pushes the parts that match the first pattern in their order of occurance to its output stream.",
+				"This is repeated for all patterns."
+			]
+		],
+		"see_also": ["match", "replace"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "match",
+		"usage": "match(pattern, strings...)",
+		"description": [
+			[
+				"For each given string, this function pushes a list to its output stream that contains the substrings captured by the groups of the pattern.",
+				"If the string does not match the pattern, an empty list will be pushed."
+			],
+			"If no strings are given as arguments, this function will pull values from its input stream."
+		],
+		"see_also": ["search", "split", "splitMany"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>match</code> can be used to parse various formats, for example urls.",
+				"code": "print match(\"/item/([a-z]+)/([0-9]+)/?\", \"/item/dog/5\")\n/* [/item/dog/5, dog, 5] */"
+			}
+		]
+	},
+	{
+		"name": "parseInteger",
+		"usage": "parseInteger(strings..., radix=10)",
+		"description": [
+			[
+				"For each given string, this function parses it as an integer number and pushes the resulting value to its output stream.",
+				"The radix is optional and defaults to decimal numbers."
+			]
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "parseFloating",
+		"usage": "parseFloating(strings...)",
+		"description": [
+			"For each given string, this function parses it as a decimal floating point number and pushes the resulting value to its output stream."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "bytesToString",
+		"usage": "bytesToString(bytelists...)",
+		"description": [
+			[
+				"This function converts lists of integers to strings.",
+				"The integers of a list are expected to code a UTF-8 string."
+			],
+			"If no arguments are given, this function will take the input values from its input stream."
+		],
+		"see_also": ["stringToBytes"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "stringToBytes",
+		"usage": "stringToBytes(bytelists...)",
+		"description": [
+			[
+				"This function converts strings to lists of integers.",
+				"The resulting integer use the UTF-8 character encoding."
+			],
+			"If no arguments are given, this function will take the input values from its input stream."
+		],
+		"see_also": ["bytesToString"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "strsize",
+		"usage": "strsize(str)",
+		"description": [
+			"This function returns the length of the UTF-8 encoding of a string in bytes.",
+			"Not to be confused with the <code>#</code> operator, which returns the length of the string in Unicode code units."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "&",
+		"usage": "strlist & separator",
+		"description": [
+			"This operator, also called 'join', returns a string that contains elements of the list concatenated and separated with specific separator string."
+		],
+		"see_also": [],
+		"categories": ["Operators"],
+		"examples": []
+	},
+	{
+		"_comment": "=== JSON ===",
+		
+		"name": "json",
+		"usage": "json(code)\njson()",
+		"description": [
+			"This function parses JSON data. It will take its input either as an argument or from the input stream.",
+			"The return values of this function will use the following format:",
+			[
+				"Every JSON value will be represented as a list of two elements. The first element is a string that represents the type of the value.",
+				"The second element is the value itself. The names of the types and the value representations are listed below."
+			],
+			{ "type": "table", "caption": "Format of JSON DATA", "rows": [
+				{ "type": "header", "elements": ["Type", "Value", "Example"]},
+				["<code>LIST</code>", "A Röda list", { "type": "pre", "code": "[\"LIST\", [[\"NUMBER\", 1], [\"NUMBER\", 2]]]" }],
+				["<code>MAP</code>", "A Röda list that contains lists that contain key and value.",
+					{ "type": "pre", "code": "[\"MAP\", [[\"a\", [\"NUMBER\", 1]], [\"b\", [\"NUMBER\", 2]]]]" }],
+				["<code>STRING</code>", "A Röda string", { "type": "pre", "code": "[\"STRING\", \"Cat\"]" }],
+				["<code>NUMBER</code>", "A Röda integer or a Röda floating", { "type": "pre", "code": "[\"NUMBER\", 123]" }],
+				["<code>BOOLEAN</code>", "A Röda string <code>\"true\"</code> or <code>\"false\"</code>",
+					{ "type": "pre", "code": "[\"BOOLEAN\", \"false\"]" }],
+				["<code>NULL</code>", "A Röda string <code>\"null\"</code>", { "type": "pre", "code": "[\"NULL\", \"null\"]" }]
+			]}
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "toRödaObj",
+				"description": "This function can be used to create a Röda object based on the tree returned by <code>json</code>.",
+				"code": [
+					"function toRödaObj(json_tree) {\n",
+					"	if [ json_tree[0] = \"LIST\" ] do\n",
+					"		return [toRödaObj(elem) for elem in json_tree[1]]\n",
+					"	done\n",
+					"	if [ json_tree[0] = \"MAP\" ] do\n",
+					"		objmap := new map\n",
+					"		for elem in json_tree[1] do\n",
+					"			objmap[elem[0]] = toRödaObj(elem[1])\n",
+					"		done\n",
+					"		return objmap\n",
+					"	done\n",
+					"	if [ json_tree[0] = \"STRING\" or json_tree[0] = \"NUMBER\" ] do\n",
+					"		return json_tree[1]\n",
+					"	done\n",
+					"	if [ json_tree[0] = \"BOOLEAN\" ] do\n",
+					"		return TRUE if [ json_tree[1] = \"true\" ]\n",
+					"		return FALSE\n",
+					"	done\n",
+					"	if [ json_tree[0] = \"NULL\" ] do\n",
+					"		error(\"null is not supported\")\n",
+					"	done\n",
+					"}\n"
+				]
+			}
+		]
+	},
+	{
+		"_comment": "=== SHIFT ===",
+		
+		"name": "shift",
+		"usage": "shift(&first_list, &other_lists...)",
+		"description": [
+			"This function removes the first element of all given lists."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== WCAT ===",
+		
+		"name": "loadResourceLines",
+		"usage": "loadResourceLines(url, ua=\"Roeda/0.11-alpha\")",
+		"description": [
+			[
+				"This function loads the resource identified by the given URL and pushes its lines to the stream.",
+				"The resource can be, for example, a HTML page on a website.",
+				"The content is assumed to be UTF-8 text."
+			],
+			[
+				"The default user agent contains text \"Roeda/\" followed by the version number of the interpreter."
+			]
+		],
+		"see_also": ["saveResource"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>loadResourceLines</code> can be used to search for certain phrases in a website.",
+				"code": "loadResourceLines(\"https://en.wikipedia.org/wiki/Uniform_Resource_Locator?action=raw\") | search \"the \\\\w+\" | print(it) for it"
+			}
+		]
+	},
+	{
+		"name": "saveResource",
+		"usage": "saveResource(url, filename, ua=\"Roeda/0.11-alpha\")",
+		"description": [
+			[
+				"This function loads the resource identified by the given URL and saves it to a file.",
+				"The resource can be, for example, an image on a website."
+			],
+			[
+				"The default user agent contains text \"Roeda/\" followed by the version number of the interpreter."
+			]
+		],
+		"see_also": ["loadResourceLines"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>saveResource</code> can be used to download files from the internet.",
+				"code": "saveResource(\"https://en.wikipedia.org/wiki/Uniform_Resource_Locator\", \"url.html\")"
+			}
+		]
+	},
+	{
+		"_comment": "=== CHR AND ORD ===",
+		
+		"name": "chr",
+		"usage": "chr(int)",
+		"description": [
+			"This function returns a string containing the unicode character identified by the given integer."
+		],
+		"see_also": ["ord"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "ord",
+		"usage": "ord(char)",
+		"description": [
+			"This function returns an integer representing the unicode code point of the given character."
+		],
+		"see_also": ["chr"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"_comment": "=== REFLECTION ===",
+		
+		"name": "reflect",
+		"usage": "reflect RecordName",
+		"description": [
+			"This operator returns a Type instance that represents the given record type."
+		],
+		"see_also": ["Type", "typeof", "is"],
+		"categories": ["Operators"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>reflect</code> can be used to retrieve fields of a type.",
+				"code": "print([push(field.name) for field in reflect Error.fields] & \", \")"
+			}
+		]
+	},
+	{
+		"name": "typeof",
+		"usage": "typeof val",
+		"description": [
+			[
+				"This operator returns a Type instance that represents the type of the given value.",
+				"The value must be a record object."
+			]
+		],
+		"see_also": ["Type", "reflect", "is"],
+		"categories": ["Operators"],
+		"examples": []
+	},
+	{
+		"name": "is",
+		"usage": "val is typename",
+		"description": [
+			[
+				"This operator returns a boolean value.",
+				"If the type of the value has identity <code>typename</code>, the return value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
+			]
+		],
+		"see_also": ["typeof"],
+		"categories": ["Operators"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "In this example <code>is</code> is used to check that all elements in a list are strings.",
+				"code": "if [ elem is string ] for elem in strlist do\n    print(\"All elements are strings!\")\ndone"
+			}
+		]
+	},
+	{
+		"name": "Type",
+		"usage": "record Type {\n    name : string\n    annotations : list\n    fields : list<<Field>>\n    newInstance : function\n}",
+		"description": [
+			[
+				"This record represents a record type. It contains information about the type."
+			],
+			{ "type": "subsubtitle", "text": "annotations" },
+			"This field contains a list of objects returned by annotation functions.",
+			{ "type": "pre", "code": [
+				"function @annotatedWith(obj) {\n    return obj\n}\n\n",
+				"function @timesThree(num) {\n    return 3*num\n}\n\n",
+				"@annotatedWith \"dog\"\n@timesThree 5\nrecord R {}\n\n",
+				"print(reflect R.annotations)\n",
+				"/* [dog, 15] */"
+			] },
+			{ "type": "subsubtitle", "text": "newInstance" },
+			{ "type": "pre", "code": "type.newInstance<<T...>>(args...)" },
+			[
+				"The <code>newInstance</code> method can be used to create a new intance of the type.",
+				"The possible type arguments and value arguments are given to the constructor."
+			],
+			{ "type": "pre", "code": [
+				"record Box<<T>>(val) {\n    val : T = val\n}\n\n",
+				"/* The following two lines do the same thing */\n",
+				"print(new Box<<integer>>(4))\nprint(reflect Box.newInstance<<integer>>(4))"
+			] }
+		],
+		"see_also": ["Field", "reflect", "typeof", "is"],
+		"categories": ["Record classes"],
+		"examples": []
+	},
+	{
+		"name": "Field",
+		"usage": "record Field {\n    name : string\n    annotations : string\n    type : Type\n    get : function\n    set : function\n}",
+		"description": [
+			"This record represents a field of a record class.",
+			{ "type": "subsubtitle", "text": "annotations" },
+			"This field contains a list of objects returned by annotation functions.",
+			{ "type": "subsubtitle", "text": "type" },
+			"If the type of the field is a record type, this field contains a Type object representing the type of the field.",
+			{ "type": "subsubtitle", "text": "get" },
+			{ "type": "pre", "code": "field.get(obj)" },
+			"When given an object, this function returns the current value of the field in the object.",
+			{ "type": "subsubtitle", "text": "set" },
+			{ "type": "pre", "code": "field.set(obj, val)" },
+			"When given an object, this function changes the value of the field to <code>val</code> in the object."
+		],
+		"see_also": ["Type"],
+		"categories": ["Record classes"],
+		"examples": []
+	},
+	{
+		"_comment": "=== EXEC ===",
+		
+		"name": "exec",
+		"usage": "exec(cmd, args...)\nexec(:l, cmd, args...)",
+		"description": [
+			[
+				"This function executes the given external command with the given arguments.",
+				"The exact behaviour depends on the operating system."
+			],
+			[
+				"If the <code>:l</code> flag is given, the output of the command will be pushed as lines to the output stream.",
+				"Otherwise output will be strings representing characters."
+			]
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>exec</code> can be used to call <code>ls</code> to get a list of files in the current working directory.",
+				"code": "print([exec(:l, \"ls\")])"
+			}
+		]
+	},
+	{
+		"_comment": "=== STREAM ===",
+		
+		"name": "stream",
+		"usage": "stream(&vars...)\nstream()",
+		"description": [
+			[
+				"This function initializes every given variable with a new Stream object.",
+				"If no variables are given, this function pushes one Stream object to its output stream."
+			]
+		],
+		"see_also": ["Stream"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "Stream",
+		"usage": [
+			"record Stream {",
+			"    push : function",
+			"",
+			"    pull : function",
+			"    tryPull : function",
+			"    pullAll : function",
+			"",
+			"    peek : function",
+			"    tryPeek : function",
+			"",
+			"    finish : function",
+			"}"
+		],
+		"description": [
+			[
+				"This record represents a queue similar to the one used in pipeline operations.",
+				"The distinctive feature of this data structure is that \"it contains all the current and future values that have been or will be pushed to it\".",
+				"Therefore, it is impossible to know the exact size of the stream,",
+				"as it may be anything from zero to infinity depending on the values that will be pushed to it <em>in future</em>.",
+				"In this text, word 'stream' is used to refer to the data structure as a whole, including the future values,",
+				"and word 'queue' to refer to the underlying concrete structure that contains the current values."
+			],
+			[
+				"A stream object has two states: <i>open</i> and <i>closed</i>.",
+				"A stream will be open when created and can be later closed with the <code>finish</code> method.",
+				"It is not allowed to push values to a closed stream, nor is it possible to open a closed stream.<sup>1</sup>",
+				"When a stream is closed and its queue doesn't contain values, it is called <i>empty</i>.",
+				"An <code>empty stream</code> error will be raised when it is attempted to pull values from an empty stream.",
+				"It is important to notice that open streams can never be empty, as they contain potential future values."
+			],
+			[
+				"There are many ways to use stream objects.",
+				"Some of them are showcased in the examples."
+			],
+			[
+				"<sup>1</sup> In certain circumstances some streams can be <i>paused</i>, making them appear closed, and then be <i>unpaused</i>.",
+				"This is, however, rare and can't be done with user created streams."
+			],
+			{ "type": "subsubtitle", "text": "push" },
+			{ "type": "pre", "code": "stream_obj.push(values...)" },
+			[
+				"This method will push the given values to the stream.",
+				"If no arguments are given, it will pull values from its input stream and push them to the stream.",
+				"This is different from the function counterpart of this method, as it would do nothing with no arguments given."
+			],
+			{ "type": "subsubtitle", "text": "pull, tryPull, peek and tryPeek" },
+			{ "type": "pre", "code": [
+				"stream_obj.pull(&variables...)\n",
+				"stream_obj.tryPull(&first_var, &other_vars...)\n",
+				"stream_obj.peek(&variables...)\n",
+				"stream_obj.tryPeek(&first_var, &other_vars...)"
+			] },
+			[
+				"These methods work similar to their function counterparts, except that they read from the stream object instead of their input streams."
+			],
+			{ "type": "subsubtitle", "text": "pullAll" },
+			{ "type": "pre", "code": "stream_obj.pullAll()" },
+			[
+				"This method will read values from the stream and push them to its output stream. Its function counterpart is <code>identity</code>."
+			]
+		],
+		"see_also": ["stream", "push", "pull", "tryPull", "peek", "tryPeek", "identity"],
+		"categories": ["Record classes"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "Stream objects can be used to defer the printing of some information.",
+				"code": [
+					"stream danger\n\nprint(\"ALL FRUITS:\")\nfor fruit in fruits do\n    print(fruit.name)\n",
+					"    danger.push(fruit.name) if fruit.isDangerous()\ndone\n\nprint(\"DANGEROUS FRUITS:\")\n",
+					"danger.pullAll() | print(x) for x"
+				]
+			},
+			{
+				"name": "Example 2",
+				"description": [
+					"Stream objects can be used when implementing many algorithms.",
+					"A merge sort implementation could use streams as queues.",
+					"Please note that the non-standard <code>collect</code> function is used to put the values in the input stream to a list.",
+					"The default value of the <code>key</code> parameter is <code>push</code>, used as an identity function."
+				],
+				"code": [
+					"/* Merge sort */\n",
+					"function sort(key=push) {\n",
+					"    collect() | pull(values)\n",
+					"    return *values if [ #values <= 1 ]\n",
+					"    stream l1, l2\n",
+					"    values[:#values//2]() | sort(key=key) | l1.push(); l1.finish()\n",
+					"    values[#values//2:]() | sort(key=key) | l2.push(); l2.finish()\n",
+					"    result := []\n",
+					"    while [ l1.tryPeek(e1) and l2.tryPeek(e2) ] do\n",
+					"        if [ key(e1) < key(e2) ] do\n",
+					"            result += e1\n",
+					"            l1.pull() | {}\n",
+					"        else\n",
+					"            result += e2\n",
+					"            l2.pull() | {}\n",
+					"        done\n",
+					"    done\n",
+					"    result += e1 while l1.tryPull(e1)\n",
+					"    result += e2 while l2.tryPull(e2)\n",
+					"    result()\n",
+					"}"
+				]
+			}
+		]
+	},
+	{
+		"_comment": "=== THREAD ===",
+		
+		"name": "thread",
+		"usage": "thread(func)",
+		"description": [
+			[
+				"This function returns a new Thread object initialized with <code>func</code> as the target function."
+			]
+		],
+		"see_also": ["Thread"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "Thread",
+		"usage": [
+			"record Thread {",
+			"    start : function",
+			"",
+			"    push : function",
+			"",
+			"    pull : function",
+			"    tryPull : function",
+			"    pullAll : function",
+			"",
+			"    peek : function",
+			"    tryPeek : function",
+			"}"
+		],
+		"description": [
+			[
+				"This record represents an operation that will be evaluated in its own thread.",
+				"All Thread objects must be created with the <code>thread</code> function."
+			],
+			[
+				"After the creation of a Thread object, the thread must be started to start the evaluation of the target function.",
+				"The input and output streams of the target function can be accessed with the methods of the Thread objects.",
+				"The methods act in the same way as the methods of the Stream record."
+			]
+		],
+		"see_also": ["thread", "Stream"],
+		"categories": ["Record classes"],
+		"examples": []
+	}
+]

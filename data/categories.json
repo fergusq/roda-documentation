@@ -1,0 +1,30 @@
+[
+	{
+		"name": "Constants",
+		"id": "c"
+	},
+	{
+		"name": "Control structures",
+		"id": "cs"
+	},
+	{
+		"name": "Functions",
+		"id": "f"
+	},
+	{
+		"name": "Idioms",
+		"id": "i"
+	},
+	{
+		"name": "Operators",
+		"id": "o"
+	},
+	{
+		"name": "Record classes",
+		"id": "rc"
+	},
+	{
+		"name": "Special variables",
+		"id": "sv"
+	}
+]

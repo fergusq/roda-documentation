@@ -1,0 +1,109 @@
+body {
+	background-color: #322;
+}
+
+div.content {
+	max-width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+	min-height: 70vh;
+	color: #baa;
+}
+
+div.page {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 1px;
+	padding-bottom: 15px;
+	background-color: #333;
+}
+
+div.page-nav {
+	min-height: 1em;
+}
+
+@media screen and (min-width: 900px) {
+	div.funcdoc {
+		background-color: #333;
+		padding-left: 15px;
+		padding-right: 15px;
+		padding-top: 1px;
+		padding-bottom: 15px;
+		margin: 0 0 0 235px;
+	}
+
+	div.funclist {
+		float: left;
+		width: 230px;
+		padding-top: 1px;
+		background-color: #2a2a2a;
+	}
+}
+
+h1, h2, h3, h4 {
+	font-family: sans-serif;
+	color: #fa0;
+}
+
+h1 {
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.funclist > h2, div.funclist > h3 {
+	padding-left: 24px;
+}
+
+div.funcdoc > h3, div.page > h3 {
+	border-bottom: 1px solid;
+}
+
+a {
+	color: #fff;
+}
+
+h1 > a {
+	color: #fa0;
+}
+
+pre {
+	background-color: #23241f;
+	border: 2px solid #222;
+	border-radius: 4px 4px 4px 4px;
+}
+
+p > code {
+	display: inline-block;
+	color: #f8f8f2;
+	background-color: #23241f;
+	border: 2px solid #222;
+	border-radius: 4px 4px 4px 4px;
+	padding: 2px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table, td, th {
+	border: 1px solid #baa;
+}
+
+td, th {
+	padding: 5px;
+}
+
+td > p, td > pre, th > p, th > pre {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+caption {
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.nodisp {
+	display: none;
+}

@@ -1,0 +1,42 @@
+| ifstr paragraph |
+	<p>|paragraph|</p>
+| end |
+| iflist paragraph |
+	<p>
+	| for part in paragraph part " " end |
+	</p>
+| end |
+| ifmap paragraph |
+	| if paragraph.type eq "title" |
+		<h2>|paragraph.text|</h2>
+	| end |
+	| if paragraph.type eq "subtitle" |
+		<h3>|paragraph.text|</h3>
+	| end |
+	| if paragraph.type eq "subsubtitle" |
+		<h4>|paragraph.text|</h4>
+	| end |
+	| if paragraph.type eq "pre" |
+		<pre><code class="rodacode">| iflist paragraph.code for part in paragraph.code part end end ifnlist paragraph.code paragraph.code end |</code></pre>
+	| end |
+	| if paragraph.type eq "table" |
+		<table>
+		| ifdef paragraph.caption |<caption>|paragraph.caption|</caption>| end |
+		| for row in paragraph.rows |
+			<tr>
+			| iflist row for paragraph in row |
+				<td>| include "templates/_paragraph.plan" |</td>
+			| end end |
+			| ifmap row for paragraph in row.elements |
+				| if row.type eq "header" |
+					<th>| include "templates/_paragraph.plan" |</th>
+				| end |
+				| if row.type eq "data" |
+					<td>| include "templates/_paragraph.plan" |</td>
+				| end |
+			| end end |
+			</tr>
+		| end |
+		</table>
+	| end |
+| end |

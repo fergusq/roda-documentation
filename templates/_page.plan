@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>|title| - Röda</title>
+		<link rel="stylesheet" href="|root|static/roda.css" type="text/css" />
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/monokai-sublime.min.css" type="text/css" />
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+		<script src="|root|static/rodahl.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+		| ifdef additional_head additional_head end |
+	</head>
+	
+	<body>
+		<h1>Röda documentation</h1>
+		<div class="content">
+			|content|
+		</div>
+	</body>
+</html>
