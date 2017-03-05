@@ -541,7 +541,7 @@
 	},
 	{
 		"name": "sort",
-		"usage": "sort()\nsort(cmp={|a, b|; push(a < b) })\nsort(key=push)\nsort(list)\nsort(list, cmp={|a, b|; push(a < b)})\nsort(list, key=push)",
+		"usage": "sort()\nsort(cmp={|a, b|; push(a < b) })\nsort(key=push)\nsort(values)\nsort(values, cmp={|a, b|; push(a < b)})\nsort(values, key=push)",
 		"description": [
 			[
 				"This function pulls all values from its input stream, or, alternatively, takes them as a list argument.",
