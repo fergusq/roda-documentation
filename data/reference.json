@@ -540,6 +540,30 @@
 		]
 	},
 	{
+		"name": "sort",
+		"usage": "sort()\nsort(cmp={|a, b|; push(a < b) })\nsort(key=push)\nsort(list)\nsort(list, cmp={|a, b|; push(a < b)})\nsort(list, key=push)",
+		"description": [
+			[
+				"This function pulls all values from its input stream, or, alternatively, takes them as a list argument.",
+				"It sorts the values using the operator <code>&lt;</code> as the comparator and pushes them to the output stream in order."
+			],
+			[
+				"The comparator can be changed with the <code>cmp</code> parameter."
+			]
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>sort</code> sorts the given values."
+				],
+				"code": "readLines(\"file.txt\") | sort() | writeStrings(\"file2.txt\")"
+			}
+		]
+	},
+	{
 		"_comment": "=== TRUE AND FALSE ===",
 		
 		"name": "true",
@@ -762,7 +786,7 @@
 				"If the file exists, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
 			]
 		],
-		"see_also": ["isFile", "isDirectory", "fileLength", "mimeType"],
+		"see_also": ["isFile", "isDirectory", "fileLength", "mimeType", "filePermissions"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -773,6 +797,19 @@
 			[
 				"For every given file name, this function pushes an integer to its output stream.",
 				"The integer represents the size of the file in bytes."
+			]
+		],
+		"see_also": ["mimeType", "filePermissions", "isFile", "isDirectory", "fileExists"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "filePermissions",
+		"usage": "filePermissions(filename...)",
+		"description": [
+			[
+				"For every given file name, this function pushes an integer to its output stream.",
+				"The integer represents the Posix permissions of the file."
 			]
 		],
 		"see_also": ["mimeType", "isFile", "isDirectory", "fileExists"],
@@ -788,7 +825,7 @@
 				"If the file is not a directory, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
 			]
 		],
-		"see_also": ["isDirectory", "fileExists", "fileLength", "mimeType"],
+		"see_also": ["isDirectory", "fileExists", "fileLength", "mimeType", "filePermissions"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -801,7 +838,7 @@
 				"If the file is a directory, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
 			]
 		],
-		"see_also": ["isFile", "fileExists", "fileLength", "mimeType"],
+		"see_also": ["isFile", "fileExists", "fileLength", "mimeType", "filePermissions"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -814,7 +851,7 @@
 				"The string represents the mime type of the file."
 			]
 		],
-		"see_also": ["fileLength", "isFile", "isDirectory", "fileExists"],
+		"see_also": ["fileLength", "filePermissions", "isFile", "isDirectory", "fileExists"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -866,7 +903,7 @@
 				"If no variables are given, this function pushes one random boolean value to its output stream."
 			]
 		],
-		"see_also": ["randomInteger", "randomFloating"],
+		"see_also": ["randomInteger", "randomFloating", "randomize"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -885,7 +922,7 @@
 				"If no variables are given, this function pushes one random integer value to its output stream."
 			]
 		],
-		"see_also": ["randomFloating", "randomBoolean"],
+		"see_also": ["randomFloating", "randomBoolean", "randomize"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -904,7 +941,20 @@
 				"If no variables are given, this function pushes one random floating pointer value to its output stream."
 			]
 		],
-		"see_also": ["randomInteger", "randomBoolean"],
+		"see_also": ["randomInteger", "randomBoolean", "randomize"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "randomize",
+		"usage": "randomize(seed)",
+		"description": [
+			[
+				"This function will reinitialize the random number generator with a given seed.",
+				"If the seed is not a number or a string, it will be converted to a string."
+			]
+		],
+		"see_also": ["randomInteger", "randomFloating", "randomBoolean"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -1148,6 +1198,19 @@
 				"code": "readLines(\"persons.txt\") | splitMany(sep=\",\") | for person do\n    person() | pull(first_name, last_name, email)\n    /* ... */\ndone"
 			}
 		]
+	},
+	{
+		"name": "/",
+		"usage": "str / separator",
+		"description": [
+			[
+				"This operator, also called 'split', returns the parts of the string that are separated by the given regular expression.",
+				"It is equivalent to <code>split(str, sep=separator)</code>."
+			]
+		],
+		"see_also": [],
+		"categories": ["Operators"],
+		"examples": []
 	},
 	{
 		"name": "replace",
@@ -1419,6 +1482,18 @@
 		"examples": []
 	},
 	{
+		"_comment": "=== KEYS ===",
+		
+		"name": "keys",
+		"usage": "keys(_map)",
+		"description": [
+			"This function returns the keys found in a map."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
 		"_comment": "=== REFLECTION ===",
 		
 		"name": "reflect",
@@ -1528,20 +1603,31 @@
 		"description": [
 			[
 				"This function executes the given external command with the given arguments.",
-				"The exact behaviour depends on the operating system."
-			],
-			[
-				"If the <code>:l</code> flag is given, the output of the command will be pushed as lines to the output stream.",
-				"Otherwise output will be strings representing characters."
+				"The exact behaviour depends on the operating system.",
+				"The output of the command will be pushed as one-character strings to the output stream."
 			]
 		],
-		"see_also": [],
+		"see_also": ["bufferedExec"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "bufferedExec",
+		"usage": "bufferedExec(cmd, args...)",
+		"description": [
+			[
+				"This function executes the given external command with the given arguments.",
+				"The exact behaviour depends on the operating system.",
+				"The output of the command will be pushed as lines to the output stream."
+			]
+		],
+		"see_also": ["exec"],
 		"categories": ["Functions"],
 		"examples": [
 			{
 				"name": "Example 1",
-				"description": "<code>exec</code> can be used to call <code>ls</code> to get a list of files in the current working directory.",
-				"code": "print([exec(:l, \"ls\")])"
+				"description": "<code>bufferedExec</code> can be used to call <code>ls</code> to get a list of files in the current working directory.",
+				"code": "print([bufferedExec(\"ls\")])"
 			}
 		]
 	},
