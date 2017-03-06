@@ -217,7 +217,28 @@
 			],
 			{ "type": "pre", "code": [
 				"main {\n    print(square(2)) /* 4 */\n}"
-			] }
+			] },
+			[
+				"Each function has an input stream and an output stream.",
+				"The two snippets above both push values to the output stream:",
+				"the <code>square</code> function pushes its return value and the <code>main</code> function above pushes its output.",
+				"In Röda, the only way to output to stdout is to push values to the output stream of the main function."
+			],
+			[
+				"There is no limit in the number of elements that can be pushed to the output stream."
+			],
+			{ "type": "pre", "code": [
+				"function yes(value) {\n    push(value) while true\n}"
+			] },
+			[
+				"When a function is called inside a function body, its input and output streams are connected to the streams of the parent function."
+			],
+			{ "type": "pre", "code": [
+				"function f {\n    push(1)\n}\n\nfunction g {\n    f()\n    f()\n}\n\nmain {\n    print([g()]) /* [1, 1] */\n}"
+			] },
+			[
+				"The braces <code>[ ]</code> around a function call are used to collect the return values of the function to a list."
+			]
 		]
 	}
 ]
