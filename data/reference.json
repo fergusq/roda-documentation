@@ -1,5 +1,21 @@
 [
 	{
+		"_comment": "=== REFERENCE INDEX ===",
+		
+		"name": "_index",
+		"usage": "Select an entry on the left.",
+		"description": [
+			[
+				"Welcome to the reference.",
+				"This site contains entries for most of the standard library functions,",
+				"records, variables, etc."
+			]
+		],
+		"see_also": [],
+		"categories": [],
+		"examples": []
+	},
+	{
 		"_comment": "=== SPECIAL VARIABLES ===",
 		
 		"name": "self",

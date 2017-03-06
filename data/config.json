@@ -22,6 +22,12 @@
 			"dir": "pages",
 			"datafile": "pages.json",
 			"templatefile": "pages/_page.plan"
+		},
+		{
+			"name": "top_pages",
+			"dir": "",
+			"datafile": "top_pages.json",
+			"templatefile": "pages/_page.plan"
 		}
 	]
 }

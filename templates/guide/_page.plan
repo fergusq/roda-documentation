@@ -2,6 +2,7 @@
 
 | block content |
 	<div class="funclist">
+		| include "templates/_navigation.plan" |
 		<h2>Contents</h2>
 		<ul>
 		| for page in guide |

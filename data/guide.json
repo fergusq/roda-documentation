@@ -192,6 +192,7 @@
 		"name": "functions",
 		"title": "Functions",
 		"previous": "if",
+		"next": "variable_references",
 		"content": [
 			"Every Röda program has at least one function. A function declaration is very simple:",
 			{ "type": "pre", "code": [
@@ -238,6 +239,52 @@
 			] },
 			[
 				"The braces <code>[ ]</code> around a function call are used to collect the return values of the function to a list."
+			]
+		]
+	},
+	{
+		"name": "variable_references",
+		"title": "Variable references",
+		"previous": "functions",
+		"content": [
+			{ "type": "subtitle", "text": "NOTE: This page is outdated." },
+			"When you try to use a variable that has not been declared, you'll get one of the two errors below:",
+			{ "type": "pre", "code": "$ röda\n! cat\n[E] variable 'cat' not found\n! print cat\n[E] variable not found (via implicite reference): cat" },
+			[
+				"What is their difference? In the first case, it is tried to call function 'cat' that does not exist.",
+				"Unsurprisingly, this results in an error.",
+				"In the second case it is tried to give 'cat' as an argument to the print function, which does not work either.",
+				"The error message, however, is different. Why?"
+			],
+			[
+				"It turns out that, unlike in the first case, the expression 'cat' in the second case is an <i>implicite reference</i> to the variable 'cat'.",
+				"The interpreter creates a new reference object and gives it to the print function.",
+				"This is done for every variable ever used as an argument, whether the corresponding parameter is declared to be a reference or not.",
+				"It is after evaluation of all arguments when the possible implicite references will be resolved – if needed."
+			],
+			{ "type": "subtitle", "text": "Evaluation of expressions" },
+			[
+				"Normally a variable name evaluates to the value of the variable, like a string or a function.",
+				"This is the case almost every time. There are, however, two places when something else happens.",
+				"They are the variable modifying statements and the function call arguments."
+			],
+			[
+				"In the above snippet, the expression <tt>cat</tt> evaluates to a reference to the variable 'cat'.",
+				"This is called an implicite reference.",
+				"Similarly, a reference is created in the code <tt>cat := 3</tt>. Because the value of the variable is going to be changed,",
+				"it would make no sense to resolve its current value."
+			],
+			{ "type": "subtitle", "text": "Reference parameters" },
+			[
+				"Most of parameters are by-value parameters, it is possible and useful to declare some to be a references.",
+				"For example, the <tt>pull</tt> has a reference parameter (actually a varargs list).",
+				"In the example below we declare a function with one reference parameter and one normal parameter."
+			],
+			{ "type": "pre", "code": "function f(&a, b) {\n    print(a, \" \", b)\n    a ++\n    b ++\n    print(a, \" \", b)\n}" },
+			"Lets see what happens when we use the function.",
+			{ "type": "pre", "code": "x := 0\ny := 0\nf(x, y)\nprint(x, \" \", y)\n/*\n0 0\n1 1\n1 0\n*/" },
+			[
+				"As expected, only <tt>x</tt> did change, as it was passed by reference."
 			]
 		]
 	}

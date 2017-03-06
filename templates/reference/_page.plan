@@ -2,6 +2,7 @@
 
 | block content |
 	<div class="funclist">
+		| include "templates/_navigation.plan" |
 		<h2>Builtins</h2>
 		| for category in categories |
 			<h3 onclick="$('#cat_|category.id|').slideToggle();">|category.name|</h3>

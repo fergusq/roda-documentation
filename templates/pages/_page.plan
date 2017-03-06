@@ -1,6 +1,7 @@
 | set title self.title |
 | block content |
 	<div class="funclist">
+		| include "templates/_navigation.plan" |
 		<h2>Pages</h2>
 		<ul>
 		| for page in pages |
