@@ -101,6 +101,7 @@
 				{ "type": "header", "elements": ["Name", "Syntax"]},
 				["Expression argument", {"type": "pre", "code": "EXPRESSION"}],
 				["Packet arguments", {"type": "pre", "code": "* EXPRESSION"}],
+				["For-loop argument", {"type": "pre", "code": "_"}],
 				["Named argument", {"type": "pre", "code": "VAR = EXPRESSION"}]
 			]},
 			{ "type": "subtitle", "text": "Expression level" },

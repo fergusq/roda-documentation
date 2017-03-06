@@ -556,6 +556,8 @@
 		]
 	},
 	{
+		"_comment": "=== SORT, UNIQ AND COUNT ===",
+		
 		"name": "sort",
 		"usage": "sort()\nsort(cmp={|a, b|; push(a < b) })\nsort(key=push)\nsort(values)\nsort(values, cmp={|a, b|; push(a < b)})\nsort(values, key=push)",
 		"description": [
@@ -576,6 +578,117 @@
 					"<code>sort</code> sorts the given values."
 				],
 				"code": "readLines(\"file.txt\") | sort() | writeStrings(\"file2.txt\")"
+			}
+		]
+	},
+	{
+		"name": "uniq",
+		"usage": "uniq()",
+		"description": [
+			[
+				"This function acts like <code>identity</code>, but removes the consecutive instances of equal values."
+			]
+		],
+		"see_also": ["unorderedUniq", "count", "unorderedCount"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>uniq</code> removes the consecutive instances of a value."
+				],
+				"code": "push(1, 1, 2, 1, 1, 3, 3) | uniq() /* stream contains now: 1, 2, 1, 3 */"
+			},
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>uniq</code> can be used together with <code>sort</code> to create a stream of unique values."
+				],
+				"code": "push(1, 1, 2, 1, 1, 3, 3) | sort() | uniq() /* stream contains now: 1, 2, 3 */"
+			}
+		]
+	},
+	{
+		"name": "unorderedUniq",
+		"usage": "unorderedUniq()",
+		"description": [
+			[
+				"This function reads all values from its input stream and pushes each unique value to its output stream in unspecified order.",
+				"In case the output should be sorted, it is more optimal to use the <code>uniq</code> function (as in example 2 of <code>uniq</code>)."
+			]
+		],
+		"see_also": ["uniq", "count", "unorderedCount"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>unorderedUniq</code> returns the unique values in the stream in an unspecified order."
+				],
+				"code": "push(1, 1, 2, 1, 1, 3, 3) | unorderedUniq() /* stream contains now (for example): 1, 3, 2 */"
+			}
+		]
+	},
+	{
+		"name": "count",
+		"usage": "count()",
+		"description": [
+			[
+				"This function is similar to <code>uniq</code>,",
+				"but for each sequence of equal values, it pushes both the value and the length of the sequence to the output stream, in that order."
+			]
+		],
+		"see_also": ["uniq", "count", "unorderedCount"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>count</code> can be used to count the number of consecutive equal elements in a stream."
+				],
+				"code": "push(1, 1, 2, 1, 1, 3, 3) | count() /* stream contains now: 1, 2, 2, 1, 1, 2, 3, 2 */"
+			},
+			{
+				"name": "Example 2",
+				"description": [
+					"<code>count</code> can be used together with a for loop."
+				],
+				"code": [
+					"push(1, 1, 2, 1, 1, 3, 3) | count() | for val, num do\n    print(val, \" was repeated \", num, \" time(s).\")\ndone\n",
+					"/*\n1 was repeated 2 time(s).\n2 was repeated 1 time(s).\n1 was repeated 2 time(s).\n3 was repeated 2 time(s).\n*/"
+				]
+			}
+		]
+	},
+	{
+		"name": "unorderedCount",
+		"usage": "unorderedCount()",
+		"description": [
+			[
+				"This reads all values in its input stream and counts the number of each unique value.",
+				"For each such unique value, it pushes to its output stream the value and the number of occurances, in that order.",
+				"The values themselves are pushed in an unspecified order."
+			]
+		],
+		"see_also": ["uniq", "count", "unorderedCount"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>unorderedCount</code> can be used to count the number of each unique value in the stream."
+				],
+				"code": "push(1, 1, 2, 1, 1, 3, 3) | count() /* stream contains now (for example): 1, 4, 3, 2, 2, 1 */"
+			},
+			{
+				"name": "Example 2",
+				"description": [
+					"<code>unorderedCount</code> can be used together with a for loop."
+				],
+				"code": [
+					"push(1, 1, 2, 1, 1, 3, 3) | count() | for val, num do\n    print(val, \" was seen \", num, \" time(s).\")\ndone\n",
+					"/*\n1 was seen 4 time(s).\n3 was seen 2 time(s).\n2 was seen 1 time(s).\n*/"
+				]
 			}
 		]
 	},
@@ -1496,6 +1609,40 @@
 		"see_also": ["chr"],
 		"categories": ["Functions"],
 		"examples": []
+	},
+	{
+		"_comment": "=== UPPER AND LOWER CASE ===",
+		
+		"name": "upperCase",
+		"usage": "upperCase(str)",
+		"description": [
+			"This function converts all lower case letters to upper case."
+		],
+		"see_also": ["lowerCase"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>upperCase</code> converst lower case letters to upper case.",
+				"code": "print(upperCase(\"oBjeCt\")) /* OBJECT */"
+			}
+		]
+	},
+	{
+		"name": "lowerCase",
+		"usage": "lowerCase(str)",
+		"description": [
+			"This function converts all upper case letters to lower case."
+		],
+		"see_also": ["upperCase"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>lowerCase</code> converst upper case letters to lower case.",
+				"code": "print(lowerCase(\"oBjeCt\")) /* object */"
+			}
+		]
 	},
 	{
 		"_comment": "=== KEYS ===",
