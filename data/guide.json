@@ -229,7 +229,7 @@
 				"There is no limit in the number of elements that can be pushed to the output stream."
 			],
 			{ "type": "pre", "code": [
-				"function yes(value) {\n    push(value) while true\n}"
+				"function yes(val) {\n    push(val) while true\n}"
 			] },
 			[
 				"When a function is called inside a function body, its input and output streams are connected to the streams of the parent function."

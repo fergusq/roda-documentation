@@ -1,4 +1,4 @@
-| block title self.name end |
+| block title ifdef self.title self.title end ifndef self.title self.name end end |
 
 | block content |
 	<div class="funclist">
@@ -8,13 +8,13 @@
 			<h3 onclick="$('#cat_|category.id|').slideToggle();">|category.name|</h3>
 			<ul id="cat_|category.id|" class="nodisp">
 			| for page in category.pages.sorted_by_name |
-				<li><a href="|root page.path|">|page.name|</a></li>
+				<li><a href="|root page.path|">|ifdef page.title page.title end ifndef page.title page.name end|</a></li>
 			| end |
 			</ul>
 		| end |
 	</div>
 	<div class="funcdoc">
-		<h2>|self.name|</h2>
+		<h2>|title|</h2>
 		<pre><code class="rodacode">| iflist self.usage for l in self.usage l |
 |			end end ifnlist self.usage self.usage end |</code></pre>
 		<h3>Description</h3>
@@ -25,7 +25,13 @@
 			<h3>See also</h3>
 			<ul>
 			| for name in self.see_also |
-				<li><a href="|root reference_map[name].path|">|reference_map[name].name|</a></li>
+				<li><a href="|root reference_map[name].path|">
+				| ifdef reference_map[name].title |
+					|reference_map[name].title|
+				| end ifndef reference_map[name].title |
+					|reference_map[name].name|
+				| end |
+				</a></li>
 			| end |
 			</ul>
 		| end |

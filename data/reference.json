@@ -600,7 +600,7 @@
 				"code": "push(1, 1, 2, 1, 1, 3, 3) | uniq() /* stream contains now: 1, 2, 1, 3 */"
 			},
 			{
-				"name": "Example 1",
+				"name": "Example 2",
 				"description": [
 					"<code>uniq</code> can be used together with <code>sort</code> to create a stream of unique values."
 				],
@@ -1294,7 +1294,7 @@
 				"If no arguments are given, this function will read values from the input stream."
 			]
 		],
-		"see_also": ["splitMany", "match"],
+		"see_also": ["splitMany", "split-operator", "match"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -1318,7 +1318,7 @@
 				"If no arguments are given, this function will read values from the input stream."
 			]
 		],
-		"see_also": ["split", "match"],
+		"see_also": ["split", "split-operator", "match"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -1329,7 +1329,8 @@
 		]
 	},
 	{
-		"name": "/",
+		"name": "split-operator",
+		"title": "/",
 		"usage": "str / separator",
 		"description": [
 			[
@@ -1337,7 +1338,7 @@
 				"It is equivalent to <code>split(str, sep=separator)</code>."
 			]
 		],
-		"see_also": [],
+		"see_also": ["split", "splitMany"],
 		"categories": ["Operators"],
 		"examples": []
 	},
@@ -1463,7 +1464,8 @@
 		"examples": []
 	},
 	{
-		"name": "&",
+		"name": "join-operator",
+		"title": "&",
 		"usage": "strlist & separator",
 		"description": [
 			"This operator, also called 'join', returns a string that contains elements of the list concatenated and separated with specific separator string."
@@ -1837,7 +1839,7 @@
 			[
 				"A stream object has two states: <i>open</i> and <i>closed</i>.",
 				"A stream will be open when created and can be later closed with the <code>finish</code> method.",
-				"It is not allowed to push values to a closed stream, nor is it possible to open a closed stream.<sup>1</sup>",
+				"It is not allowed to push values to a closed stream, nor is it possible to open a closed stream.",
 				"When a stream is closed and its queue doesn't contain values, it is called <i>empty</i>.",
 				"An <code>empty stream</code> error will be raised when it is attempted to pull values from an empty stream.",
 				"It is important to notice that open streams can never be empty, as they contain potential future values."
@@ -1845,10 +1847,6 @@
 			[
 				"There are many ways to use stream objects.",
 				"Some of them are showcased in the examples."
-			],
-			[
-				"<sup>1</sup> In certain circumstances some streams can be <i>paused</i>, making them appear closed, and then be <i>unpaused</i>.",
-				"This is, however, rare and can't be done with user created streams."
 			],
 			{ "type": "subsubtitle", "text": "push" },
 			{ "type": "pre", "code": "stream_obj.push(values...)" },
