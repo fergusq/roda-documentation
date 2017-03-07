@@ -88,11 +88,16 @@
 				"print(\"Hey!\") /* NEWLINE HERE */\nif [ happy ] do\n    print(\"I'm happy\")\ndone"
 			] },
 			[
-				"If an anonymous function has parameters, there must be a newline or a semicolon after the parameter declaration."
+				"If an anonymous function has parameters, its a good practice to have a newline or a semicolon after the parameter declaration,",
+				"although this rule is not enforced by the interpreter."
 			],
 			{ "type": "pre", "code": [
 				"hello := { |text|; print(\"Hello \"..text) }\n\nhello(\"world\")"
 			] },
+			[
+				"Sometimes the semicolon/newline is also used after the condition of an <code>if</code> or <code>while</code> block,",
+				"as in Bourne shell, but this is no official rule."
+			],
 			[
 				"A semicolon and a newline character are lexically equivalent, ie. they are treated as they were the same character."
 			]
