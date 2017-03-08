@@ -613,7 +613,7 @@
 		"usage": "unorderedUniq()",
 		"description": [
 			[
-				"This function reads all values from its input stream and pushes each unique value to its output stream in unspecified order.",
+				"This function reads all values from its input stream and pushes each unique value to its output stream in an unspecified order.",
 				"In case the output should be sorted, it is more optimal to use the <code>uniq</code> function (as in example 2 of <code>uniq</code>)."
 			]
 		],
@@ -638,7 +638,7 @@
 				"but for each sequence of equal values, it pushes both the value and the length of the sequence to the output stream, in that order."
 			]
 		],
-		"see_also": ["uniq", "count", "unorderedCount"],
+		"see_also": ["unorderedCount", "uniq", "unorderedUniq"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -665,12 +665,12 @@
 		"usage": "unorderedCount()",
 		"description": [
 			[
-				"This reads all values in its input stream and counts the number of each unique value.",
-				"For each such unique value, it pushes to its output stream the value and the number of occurances, in that order.",
+				"This function reads all values in its input stream and counts the number of each unique value.",
+				"For each such unique value, it pushes to the output stream the value and the number of occurances, in that order.",
 				"The values themselves are pushed in an unspecified order."
 			]
 		],
-		"see_also": ["uniq", "count", "unorderedCount"],
+		"see_also": ["count", "uniq", "unorderedUniq"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -678,7 +678,7 @@
 				"description": [
 					"<code>unorderedCount</code> can be used to count the number of each unique value in the stream."
 				],
-				"code": "push(1, 1, 2, 1, 1, 3, 3) | count() /* stream contains now (for example): 1, 4, 3, 2, 2, 1 */"
+				"code": "push(1, 1, 2, 1, 1, 3, 3) | unorderedCount() /* stream contains now (for example): 1, 4, 3, 2, 2, 1 */"
 			},
 			{
 				"name": "Example 2",
@@ -686,7 +686,7 @@
 					"<code>unorderedCount</code> can be used together with a for loop."
 				],
 				"code": [
-					"push(1, 1, 2, 1, 1, 3, 3) | count() | for val, num do\n    print(val, \" was seen \", num, \" time(s).\")\ndone\n",
+					"push(1, 1, 2, 1, 1, 3, 3) | unorderedCount() | for val, num do\n    print(val, \" was seen \", num, \" time(s).\")\ndone\n",
 					"/*\n1 was seen 4 time(s).\n3 was seen 2 time(s).\n2 was seen 1 time(s).\n*/"
 				]
 			}
