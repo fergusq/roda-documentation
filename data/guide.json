@@ -197,7 +197,7 @@
 		"name": "functions",
 		"title": "Functions",
 		"previous": "if",
-		"next": "variable_references",
+		"next": "for",
 		"content": [
 			"Every Röda program has at least one function. A function declaration is very simple:",
 			{ "type": "pre", "code": [
@@ -248,9 +248,69 @@
 		]
 	},
 	{
+		"name": "for",
+		"title": "For loops",
+		"previous": "functions",
+		"content": [
+			[
+				"<code>for</code> loops are one of the most important control structures in Röda.",
+				"They are used to iterate values in a list – or values in the stream."
+			],
+			[
+				"The most basic and traditional <code>for</code> loop iterates values in a list."
+			],
+			{ "type": "pre", "code": "for i in [1, 2, 3, 4] do\n    print(i)\ndone" },
+			[
+				"Like other control structures, <code>for</code> has also a suffix form."
+			],
+			{ "type": "pre", "code": "print(i) for i in [1, 2, 3, 4]" },
+			[
+				"A <code>for</code> loop may also have a condition that is used to select the values from the list."
+			],
+			{ "type": "pre", "code": "print(i) for i in [1, 2, 3, 4] if [ i%2 = 0 ]" },
+			[
+				"A <code>for</code> can be used to achieve something similar to list comprehension in eg. Python."
+			],
+			{ "type": "pre", "code": "lengths := [fileLength(f) for f in [ls(\".\")]]" },
+			[
+				"Perhaps more often the loop is used to iterate over the stream.",
+				"In this case, there is no <code>in</code>-keyword or a list.",
+				"Often the source of the values is a function call, like <code>seq(a, b)</code>."
+			],
+			{ "type": "pre", "code": "seq(1, 4) | for i do\n    print(i)\ndone" },
+			[
+				"This operation has also a suffix form."
+			],
+			{ "type": "pre", "code": "seq(1, 4) | print(i) for i" },
+			[
+				"Röda has builtin syntax sugar that can be used in place of a <code>for</code> loop.",
+				"Each underscore inside an argument is replaced with one variable, and the whole function is wrapped in a loop."
+			],
+			{ "type": "pre", "code": "seq(1, 4) | print(_)" },
+			[
+				"Multiple underscores can be used, which means that the for loop will have more than one variable.",
+				"It is possible to use underscores inside expressions and even inside function calls."
+			],
+			{ "type": "pre", "code": [
+				"seq(1, 4) | print(_, \" \", _)\n/* is same as */\nseq(1, 4) | print(x, \" \", y) for x, y\n\n",
+				"seq(1, 4) | print(_/_) /* prints 0.5 and 0.75 */\n\n",
+				"ls(\".\") | print(fileLength(_))\n/* is same as */\nls(\".\") | print(fileLength(x)) for x\n\n"
+			]},
+			[
+				"It is important to note where the <code>for</code> loops are placed when using underscores.",
+				"By default, an underscore puts the nearest function call around a loop, like in examples above except the last.",
+				"If the nearest function call is not a statement but an expression, the loop is placed around it only if it is not the first call of a pipeline,",
+				"or if there is no pipeline."
+			],
+			{ "type": "pre", "code": [
+				"... | print(_, f(_) | g(_))\n/* is same as */\n... | print(x, f(y) | g(z) for z) for x, y"
+			]}
+		]
+	},
+	{
 		"name": "variable_references",
 		"title": "Variable references",
-		"previous": "functions",
+		"previous": "for",
 		"content": [
 			{ "type": "subtitle", "text": "NOTE: This page is outdated." },
 			"When you try to use a variable that has not been declared, you'll get one of the two errors below:",
