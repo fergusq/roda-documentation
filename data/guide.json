@@ -304,6 +304,12 @@
 			],
 			{ "type": "pre", "code": [
 				"... | print(_, f(_) | g(_))\n/* is same as */\n... | print(x, f(y) | g(z) for z) for x, y"
+			]},
+			[
+				"Undescores can be used to simulate map-operation found in functional programming languages."
+			],
+			{ "type": "pre", "code": [
+				"seq(1, 10) | [2 * _] | print(_)\n/* is same as */\nseq(1, 10) | push(2*x) for x | print(x) for x"
 			]}
 		]
 	},
