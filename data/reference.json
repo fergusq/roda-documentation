@@ -811,7 +811,7 @@
 		"_comment": "=== SEQ ===",
 		
 		"name": "seq",
-		"usage": "seq(from, to)",
+		"usage": "seq(from, to, step=1)",
 		"description": [
 			"This function pushes all integers in range <code>[from, to]</code> to its output stream."
 		],
