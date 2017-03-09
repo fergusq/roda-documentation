@@ -1764,7 +1764,7 @@
 		"_comment": "=== EXEC ===",
 		
 		"name": "exec",
-		"usage": "exec(cmd, args...)\nexec(:l, cmd, args...)",
+		"usage": "exec(cmd, args..., env=new map)",
 		"description": [
 			[
 				"This function executes the given external command with the given arguments.",
@@ -1778,7 +1778,7 @@
 	},
 	{
 		"name": "bufferedExec",
-		"usage": "bufferedExec(cmd, args...)",
+		"usage": "bufferedExec(cmd, args..., env=new map)",
 		"description": [
 			[
 				"This function executes the given external command with the given arguments.",
