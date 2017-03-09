@@ -101,7 +101,6 @@
 				{ "type": "header", "elements": ["Name", "Syntax"]},
 				["Expression argument", {"type": "pre", "code": "EXPRESSION"}],
 				["Packet arguments", {"type": "pre", "code": "* EXPRESSION"}],
-				["For-loop argument", {"type": "pre", "code": "_"}],
 				["Named argument", {"type": "pre", "code": "VAR = EXPRESSION"}]
 			]},
 			{ "type": "subtitle", "text": "Expression level" },
@@ -123,12 +122,14 @@
 				["Reflect", {"type": "pre", "code": "reflect TYPE"}],
 				["Anonymous function", {"type": "pre", "code": "{ STATEMENTS }\n{ |VAR, VAR, ..., VAR|; STATEMENTS }"}],
 				["String literal", {"type": "pre", "code": "\"...\""}],
+				["Template string literal", {"type": "pre", "code": "`...`"}],
 				["Integer literal", {"type": "pre", "code": "123"}],
 				["Floating literal", {"type": "pre", "code": "123.456"}],
 				["List literal", {"type": "pre", "code": "[ EXPRESSION, EXPRESSION, ..., EXPRESSION ]"}],
 				["Statement expression (reads single value from the output stream of the statement)", {"type": "pre", "code": "STATEMENT_B"}],
 				["Statement expression (creates a list of all values in the output stream of the statement)", {"type": "pre", "code": "[ STATEMENT_B ]"}],
-				["Expression expression", {"type": "pre", "code": "( EXPRESSION )"}]
+				["Expression expression", {"type": "pre", "code": "( EXPRESSION )"}],
+				["For-loop argument", {"type": "pre", "code": "_"}]
 			]},
 			[
 				"<code>STATEMENT_B</code> refers to statements that are allowed to be used at the expression level.",
