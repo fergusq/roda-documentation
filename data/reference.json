@@ -542,7 +542,7 @@
 			"Example implementation:",
 			"<pre><code class=\"rodacode\">function identity {\n    push(x) for x\n}</code></pre>"
 		],
-		"see_also": ["head", "tail"],
+		"see_also": ["head", "tail", "reverse"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -552,6 +552,28 @@
 					"This is useful for example when a value must be prepended to the stream."
 				],
 				"code": "readLines(\"file.txt\") | { push(\"START\"); identity(); push(\"END\") }() | print(line) for line"
+			}
+		]
+	},
+	{
+		"name": "reverse",
+		"usage": "reverse()\nreverse(values)",
+		"description": [
+			[
+				"This function pulls all values from its input stream and pushes them to its output stream in a reversed order.",
+				"Alternatively it can take the values as a list."
+			]
+		],
+		"see_also": ["identity"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>reverse</code> can be used to reverse a stream.",
+					"Outputs the 5 last lines of a file, reversed."
+				],
+				"code": "readLines(\"file.txt\") | tail(5) | reverse() | print(v) for v"
 			}
 		]
 	},
