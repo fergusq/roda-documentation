@@ -161,13 +161,13 @@
 			{ "type": "table", "caption": "Operator precedencies", "rows": [
 				{ "type": "header", "elements": ["Precedence level", "Operators"]},
 				["1", "<code>.</code>, <code>[]</code>, <code>[:]</code>, <code>is</code>"],
-				["2", "<code>-</code> (unary), <code>not</code> (unary), <code>b_not</code> (unary), <code>#</code> (unary), <code>typeof</code> (unary)"],
-				["3", "<code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>"],
-				["4", "<code>+</code>, <code>-</code>"],
-				["5", "<code>b_and</code>, <code>b_or</code>, <code>b_shiftl</code>, <code>b_shiftr</code>, <code>b_shiftrr</code>"],
-				["6", "<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>in</code>"],
-				["7", "<code>&amp;</code>"],
-				["8", "<code>..</code>"],
+				["2", "<code>&amp;</code>"],
+				["3", "<code>-</code> (unary), <code>not</code> (unary), <code>b_not</code> (unary), <code>#</code> (unary), <code>typeof</code> (unary)"],
+				["4", "<code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>"],
+				["5", "<code>+</code>, <code>-</code>"],
+				["6", "<code>b_and</code>, <code>b_or</code>, <code>b_shiftl</code>, <code>b_shiftr</code>, <code>b_shiftrr</code>"],
+				["7", "<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>in</code>"],
+				["8", "<code>..</code>, <code>...</code>"],
 				["9", "<code>=</code>, <code>!=</code>, <code>=~</code>"],
 				["10", "<code>and</code>, <code>or</code>, <code>xor</code>"]
 			]}
