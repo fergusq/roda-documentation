@@ -116,6 +116,9 @@
 				["Slice", {"type": "pre", "code": [
 					"EXPRESSION[EXPRESSION:EXPRESSION]\n",
 					"EXPRESSION[EXPRESSION:]\nEXPRESSION[:EXPRESSION]\n",
+					"EXPRESSION[EXPRESSION:EXPRESSION:STEP]\n",
+					"EXPRESSION[EXPRESSION::STEP]\nEXPRESSION[:EXPRESSION:STEP]\n",
+					"EXPRESSION[::STEP]\n",
 					"EXPRESSION[:] /* \"copy-operator\" */"
 				]}],
 				["New", {"type": "pre", "code": "new TYPE\nnew TYPE(EXPRESSION, EXPRESSION, ..., EXPRESSION)"}],
