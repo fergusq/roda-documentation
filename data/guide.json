@@ -35,7 +35,7 @@
 			[
 				"To run a Röda program, specify the file name as an argument to the interpreter:"
 			],
-			{ "type": "pre", "code": "$ röda file.röd" },
+			{ "type": "pre", "code": "$ java -jar röda.jar file.röd" },
 			[
 				"Without arguments the interpreter will be opened in the interactive mode."
 			],
