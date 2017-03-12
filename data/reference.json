@@ -2028,5 +2028,54 @@
 		"see_also": ["thread", "Stream"],
 		"categories": ["Record classes"],
 		"examples": []
+	},
+	{
+		"_comment": "=== SUM AND CONCAT ===",
+		
+		"name": "sum",
+		"usage": "sum()\nsum(fst=val)\nsum(lists...)\nsum(lists..., fst=val)",
+		"description": [
+			[
+				"This function reads all numbers from its input stream and returns their sum.",
+				"Alternatively, it returns the sums of numbers in each argument list."
+			],
+			[
+				"The data type of the sum is determined by the first value to be summed,",
+				"ie. the first value in the input stream or list, or the value of the <code>fst</code> parameter, if given.",
+				"If the first value is an integer, the return value will be an integer.",
+				"If the first value is a floating point number, the return value will also be a floating point number.",
+				"If the input contains a mix of integers and floating point numbers,",
+				"it is recommended to specify the <code>fst</code> parameter to be a floating point number, ie. <code>sum(fst=0.0)</code>."
+			],
+			[
+				"If the first value is a list, this function appends all following values to the list and returns the new list.",
+				"The resulting list will be a distinct object, and the original list will not be modified."
+			],
+			[
+				"<code>sum([a, b, c])</code> is always equivalent to <code>a+b+c</code>."
+			]
+		],
+		"see_also": ["concat"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "concat",
+		"usage": "concat()\nconcat(fst=val)\nconcat(lists...)\nconcat(lists..., fst=val)",
+		"description": [
+			[
+				"This function reads all lists or strings from its input stream and concatenates them, returning the result.",
+				"Alternatively, it returns the concatenation of numbers or strings in each argument list."
+			],
+			[
+				"The input values must be either strings or lists, and the data types must not be mixed."
+			],
+			[
+				"<code>concat([a, b, c])</code> is always equivalent to <code>a..b..c</code>."
+			]
+		],
+		"see_also": ["sum"],
+		"categories": ["Functions"],
+		"examples": []
 	}
 ]
