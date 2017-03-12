@@ -787,6 +787,51 @@
 		"examples": []
 	},
 	{
+		"_comment": "=== STD I/O ===",
+		
+		"name": "STDIN",
+		"usage": "STDIN",
+		"description": [
+			[
+				"This constant is a <code>Stream</code> object that is connected to the standard input.",
+				"By default, it will contains lines of the input stream,",
+				"but this behavior can be changed with the <code>inputMode</code> function.",
+				"Pushing to this stream will result in an error."
+			]
+		],
+		"see_also": ["STDOUT", "STDERR", "Stream"],
+		"categories": ["Constants"],
+		"examples": []
+	},
+	{
+		"name": "STDOUT",
+		"usage": "STDOUT",
+		"description": [
+			[
+				"This constant is a <code>Stream</code> object that is connected to the standard output.",
+				"All values pushed to it will be sent to the standard output.",
+				"Pulling this stream will result in an error."
+			]
+		],
+		"see_also": ["STDIN", "STDERR", "Stream"],
+		"categories": ["Constants"],
+		"examples": []
+	},
+	{
+		"name": "STDERR",
+		"usage": "STDERR",
+		"description": [
+			[
+				"This constant is a <code>Stream</code> object that is connected to the standard error.",
+				"All values pushed to it will be sent to the standard error.",
+				"Pulling this stream will result in an error."
+			]
+		],
+		"see_also": ["STDIN", "STDOUT", "Stream", "errprint"],
+		"categories": ["Constants"],
+		"examples": []
+	},
+	{
 		"_comment": "=== NAME AND UNDEFINE ===",
 		
 		"name": "name",
@@ -1143,7 +1188,7 @@
 				"In the future, a function may be designed to directly push values to stdout also."
 			]
 		],
-		"see_also": ["errprint"],
+		"see_also": ["STDERR"],
 		"categories": ["Functions"],
 		"examples": []
 	},
