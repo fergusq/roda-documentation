@@ -2064,7 +2064,7 @@
 		"examples": []
 	},
 	{
-		"_comment": "=== SUM AND CONCAT ===",
+		"_comment": "=== SUM, PRODUCT AND CONCAT ===",
 		
 		"name": "sum",
 		"usage": "sum()\nsum(fst=val)\nsum(lists...)\nsum(lists..., fst=val)",
@@ -2086,10 +2086,34 @@
 				"The resulting list will be a distinct object, and the original list will not be modified."
 			],
 			[
-				"<code>sum([a, b, c])</code> is always equivalent to <code>a+b+c</code>."
+				"<code>sum([a, b, c])</code> is usually equivalent to <code>a+b+c</code>."
 			]
 		],
-		"see_also": ["concat"],
+		"see_also": ["product", "concat"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "product",
+		"usage": "product()\nproduct(fst=val)\nproduct(lists...)\nproduct(lists..., fst=val)",
+		"description": [
+			[
+				"This function reads all numbers from its input stream and returns their product.",
+				"Alternatively, it returns the products of numbers in each argument list."
+			],
+			[
+				"The data type of the sum is determined by the first value to be multiplied,",
+				"ie. the first value in the input stream or list, or the value of the <code>fst</code> parameter, if given.",
+				"If the first value is an integer, the return value will be an integer.",
+				"If the first value is a floating point number, the return value will also be a floating point number.",
+				"If the input contains a mix of integers and floating point numbers,",
+				"it is recommended to specify the <code>fst</code> parameter to be a floating point number, ie. <code>sum(fst=1.0)</code>."
+			],
+			[
+				"<code>product([a, b, c])</code> is usually equivalent to <code>a*b*c</code>."
+			]
+		],
+		"see_also": ["sum", "concat"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -2108,7 +2132,7 @@
 				"<code>concat([a, b, c])</code> is always equivalent to <code>a..b..c</code>."
 			]
 		],
-		"see_also": ["sum"],
+		"see_also": ["sum", "product"],
 		"categories": ["Functions"],
 		"examples": []
 	}
