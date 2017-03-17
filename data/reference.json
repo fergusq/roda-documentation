@@ -495,15 +495,15 @@
 		]
 	},
 	{
-		"name": "subseq",
-		"usage": "subseq(n)",
+		"name": "slide",
+		"usage": "slide(n)",
 		"description": [
 			[
 				"This function reads values from the stream and pushes the values of each <var>n</var>-length subsequence to the output stream."
 			],
 			"A possible implementation:",
 			{ "type": "pre", "code": [
-				"function subseq(n) {\n",
+				"function slide(n) {\n",
 				"	values := []\n",
 				"	head(n) | for element do\n",
 				"		push(element)\n",
@@ -521,9 +521,9 @@
 		"examples": [
 			{
 				"name": "Example 1",
-				"description": "<code>subseq</code> pushes each <var>n</var>-length subsequence of the input stream to the output stream.",
+				"description": "<code>slide</code> pushes each <var>n</var>-length subsequence of the input stream to the output stream.",
 				"code": [
-					"[1, 2, 3, 4, 5] | subseq(2) /* stream contains now: 1, 2, 3, 2, 3, 4, 3, 4, 5 */"
+					"[1, 2, 3, 4, 5] | slide(2) /* stream contains now: 1, 2, 3, 2, 3, 4, 3, 4, 5 */"
 				]
 			}
 		]
