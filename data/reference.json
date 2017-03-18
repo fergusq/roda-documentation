@@ -1478,7 +1478,7 @@
 				"This is repeated for all patterns."
 			]
 		],
-		"see_also": ["match", "replace"],
+		"see_also": ["match", "replace", "indexOf"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -1501,6 +1501,19 @@
 				"code": "print match(\"/item/([a-z]+)/([0-9]+)/?\", \"/item/dog/5\")\n/* [/item/dog/5, dog, 5] */"
 			}
 		]
+	},
+	{
+		"name": "indexOf",
+		"usage": "indexOf(substr, str)\nindexOf(item, values)",
+		"description": [
+			[
+				"This function returns the index of the given substring in a string, or <code>-1</code> if the substring is not found in the string.",
+				"Alternatively, this function returns the index of the given value in a list, or <code>-1</code> if the value is not in the list."
+			]
+		],
+		"see_also": ["search"],
+		"categories": ["Functions"],
+		"examples": []
 	},
 	{
 		"name": "parseInteger",
