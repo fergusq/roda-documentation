@@ -833,7 +833,7 @@
 				"Pushing to this stream will result in an error."
 			]
 		],
-		"see_also": ["STDOUT", "STDERR", "Stream"],
+		"see_also": ["inputMode", "STDOUT", "STDERR", "Stream"],
 		"categories": ["Constants"],
 		"examples": []
 	},
@@ -863,6 +863,24 @@
 		],
 		"see_also": ["STDIN", "STDOUT", "Stream", "errprint"],
 		"categories": ["Constants"],
+		"examples": []
+	},
+	{
+		"name": "inputMode",
+		"usage": "inputMode(\"line\")\ninputMode(\"l\")\ninputMode(\"character\")\ninputMode(\"c\")",
+		"description": [
+			[
+				"This function changes the input mode.",
+				"If the mode is set to <code>line</code>,",
+				"the input stream of the main function and the <code>STDIN</code> stream",
+				"contain lines, ie. the input is buffered.",
+				"If the mode is set to <code>character</code>,",
+				"the input stream of the main function and the <code>STDIN</code> stream",
+				"contain single Unicode code units."
+			]
+		],
+		"see_also": ["STDIN"],
+		"categories": ["Functions"],
 		"examples": []
 	},
 	{
