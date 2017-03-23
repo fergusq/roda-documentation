@@ -1496,7 +1496,7 @@
 				"This is repeated for all patterns."
 			]
 		],
-		"see_also": ["match", "replace", "indexOf"],
+		"see_also": ["match", "replace", "indexOf", "grep"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -1605,6 +1605,43 @@
 		"see_also": [],
 		"categories": ["Operators"],
 		"examples": []
+	},
+	{
+		"name": "grep",
+		"usage": "grep(first_pattern, other_patterns...)",
+		"description": [
+			[
+				"This function pulls strings from its input stream and pushes each to the output stream if it matches one or more given patterns."
+			]
+		],
+		"see_also": ["filter", "search"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>grep</code> can be used to find all lines in a file that contain only lower case letters.",
+				"code": "readLines(\"file.txt\") | grep(\"[a-z]+\")"
+			}
+		]
+	},
+	{
+		"name": "filter",
+		"usage": "filter(condition)",
+		"description": [
+			[
+				"This function pulls strings from its input stream and",
+				"pushes each value <var>x</var> to the output stream if <code>condition(x)</code> returns either nothing or only <code>TRUE</code>s."
+			]
+		],
+		"see_also": ["grep"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>filter</code> removes the elements that do not match the condition from the stream.",
+				"code": "seq 1, 10 | filter {|n|; [n%2=0]} /* stream contains: 2, 4, 6, 8, 10 */"
+			}
+		]
 	},
 	{
 		"_comment": "=== JSON ===",
