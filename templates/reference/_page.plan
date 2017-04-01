@@ -4,17 +4,41 @@
 	<div class="funclist">
 		| include "templates/_navigation.plan" |
 		<h2>Builtins</h2>
+		<input type="text" id="search-field" onkeyup="updateSearch();" />
+		<script>
+		function updateSearch() {
+			var searchField = document.getElementById("search-field");
+			if (searchField.value == "") {
+				$(".toc_category").hide();
+				$(".toc_item").show();
+			}
+			else {
+				$(".toc_category").show();
+				$(".toc_item").hide();
+				var list = $('.toc_item');
+				var text = searchField.value.toLowerCase();
+				for (var i = 0; i < list.length; i++) {
+					var name = list[i].getElementsByClassName('toc_item_link')[0].innerHTML;
+					if (name.toLowerCase().indexOf(text) >= 0) list[i].style.display = 'list-item';
+					else list[i].style.display = 'none';
+				}
+			}
+		}
+		</script>
 		| for category in categories |
 			<h3 onclick="$('#cat_|category.id|').slideToggle();">|category.name|</h3>
-			<ul id="cat_|category.id|" class="nodisp">
+			<ul id="cat_|category.id|" class="toc_category nodisp">
 			| for page in category.pages.sorted_by_name |
-				<li><a href="|root page.path|">|ifdef page.title page.title end ifndef page.title page.name end|</a></li>
+				<li class="toc_item"><a class="toc_item_link" href="|root page.path|">|ifdef page.title page.title end ifndef page.title page.name end|</a></li>
 			| end |
 			</ul>
 		| end |
 	</div>
 	<div class="funcdoc">
 		<h2>|title|</h2>
+		<div class="source-link">
+			<a href="https://github.com/fergusq/roda-documentation/blob/master/data/reference.json">Page source</a>
+		</div>
 		<pre><code class="rodacode">| iflist self.usage for l in self.usage l |
 |			end end ifnlist self.usage self.usage end |</code></pre>
 		<h3>Description</h3>

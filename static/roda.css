@@ -53,6 +53,7 @@ h1 {
 
 div.funclist > h2, div.funclist > h3 {
 	padding-left: 24px;
+	cursor: pointer;
 }
 
 div.funcdoc > h3, div.page > h3 {
@@ -106,4 +107,17 @@ caption {
 
 .nodisp {
 	display: none;
+}
+
+div.source-link {
+	margin-top: -15px;
+	margin-bottom: 15px;
+	font-size: small;
+}
+
+#search-field {
+	margin-left: 24px;
+	border-color: #333;
+	background: #333;
+	color: #baa;
 }
