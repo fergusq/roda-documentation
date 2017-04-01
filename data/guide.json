@@ -197,7 +197,7 @@
 		"name": "functions",
 		"title": "Functions",
 		"previous": "if",
-		"next": "for",
+		"next": "streams",
 		"content": [
 			"Every Röda program has at least one function. A function declaration is very simple:",
 			{ "type": "pre", "code": [
@@ -237,13 +237,74 @@
 				"function yes(val) {\n    push(val) while true\n}"
 			] },
 			[
-				"When a function is called inside a function body, its input and output streams are connected to the streams of the parent function."
+				"When a function is called inside a function body, its input and output streams are connected to the streams of the parent function.",
+				"This means that when you call a function inside a function, the return values of the former function are also returned by the latter.",
+				"To suppress this behavior, the called function can be piped to an empty function <code>{}</code>."
 			],
 			{ "type": "pre", "code": [
-				"function f {\n    push(1)\n}\n\nfunction g {\n    f()\n    f()\n}\n\nmain {\n    print([g()]) /* [1, 1] */\n}"
+				"function f {\n    push(1)\n}\n\n",
+				"function g {\n    f() /* returns 1 */\n    f() /* returns 1 */\n    f() | {} /* the return value is piped */\n}\n\n",
+				"main {\n    print([g()]) /* [1, 1] */\n}"
 			] },
 			[
 				"The braces <code>[ ]</code> around a function call are used to collect the return values of the function to a list."
+			]
+		]
+	},
+	{
+		"name": "streams",
+		"title": "Streams and pipelines",
+		"previous": "functions",
+		"next": "for",
+		"content": [
+			[
+				"Streams are the most important feature of the Röda language.",
+				"In this chapter I try to explain some features of these streams."
+			],
+			{ "type": "subtitle", "text": "1. Every statement and expression is connected to an output stream" },
+			[
+				"Every statement and expression in Röda is connected to an output stream.",
+				"This applies even to statements that do not return values, like <code>break</code>.",
+				"Not every expression is connected to the same stream, however.",
+				"In fact, as the output stream is the place where the value of the expression goes,",
+				"every non-statement expression has its own unique output stream."
+			],
+			[
+				"Let's look at an example:"
+			],
+			{ "type": "pre", "code": [
+				"main {\n",
+				"    print(upperCase(\"Hello world\"))\n",
+				"    print(2 + 2) | {}\n",
+				"}"
+			] },
+			[
+				"In this fancy code we have three statements and five expressions.<sup><a href=\"#n1\">1</a></sup>",
+				"Of them, two statements share the same output stream,",
+				"namely the output stream of the <code>main</code> function, which happens to be the standard output stream.",
+				"One statement is piped to another statement, which means that the output stream of that statement is the input stream of the another statement."
+			],
+			[
+				"Each expression has its own unique output stream. Let's call them <i>expression streams</i>.",
+				"These streams have a very special feature: they can only contain one value.",
+				"This is logical: what would it mean to eg. the first operand of <code<+</code> to be two values?",
+				"If you try to push more than one value to an expression stream, you'll get a full stream error."
+			],
+			{ "type": "table", "caption": "Output streams", "rows": [
+				{ "type": "header", "elements": ["Statement or expression", "Output stream"]},
+				["<code>print( )</code>", "The standard output"],
+				["<code>upperCase( )</code>", "An expression stream (the first argument of <code>print</code>)"],
+				["<code>\"Hello world\"</code>", "An expression stream (the first argument of <code>upperCase</code>)"],
+				["<code>print( )</code>", "The input stream of <code>{}</code>"],
+				["<code>+</code>", "An expression stream (the first argument of <code>print</code>)"],
+				["<code>2</code>", "An expression stream (the first operand of <code>+</code>)"],
+				["<code>2</code>", "An expression stream (the second operand of <code>+</code>)"],
+				["<code>{}</code>", "The standard output"]
+			]},
+			{ "type": "subtitle", "text": "2. Some statements and expressions are connected to an input stream" },
+			{ "type": "subtitle", "text": "3. Streams are eager" },
+			[
+				"<sup><a name=\"n1\">1</a></sup>To be correct, the names of the functions are also expressions, but I haven't counted them for simplicity."
 			]
 		]
 	},
