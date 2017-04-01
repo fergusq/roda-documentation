@@ -261,7 +261,7 @@
 			"<pre><code class=\"rodacode\">function push(val...) {\n    val()\n}</code></pre>",
 			"This fact is often abused in conditions of if and while statements."
 		],
-		"see_also": ["pull", "[ ]", "return"],
+		"see_also": ["pushBack", "pull", "[ ]", "return"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -275,6 +275,19 @@
 				"code": "function duplicate {\n    for val do\n        push(val, val)\n    done\n}"
 			}
 		]
+	},
+	{
+		"name": "pushBack",
+		"usage": "pushBack(val...)",
+		"description": [
+			[
+				"This function pushes its arguments back to its input stream,",
+				"effectively making the input stream a stack."
+			]
+		],
+		"see_also": ["push"],
+		"categories": ["Functions"],
+		"examples": []
 	},
 	{
 		"name": "[ ]",
@@ -2132,7 +2145,7 @@
 		"examples": []
 	},
 	{
-		"_comment": "=== SUM, PRODUCT AND CONCAT ===",
+		"_comment": "=== SUM, PRODUCT, CONCAT AND REDUCE ===",
 		
 		"name": "sum",
 		"usage": "sum()\nsum(fst=val)\nsum(lists...)\nsum(lists..., fst=val)",
@@ -2157,7 +2170,7 @@
 				"<code>sum([a, b, c])</code> is usually equivalent to <code>a+b+c</code>."
 			]
 		],
-		"see_also": ["product", "concat"],
+		"see_also": ["product", "concat", "reduce"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -2181,7 +2194,7 @@
 				"<code>product([a, b, c])</code> is usually equivalent to <code>a*b*c</code>."
 			]
 		],
-		"see_also": ["sum", "concat"],
+		"see_also": ["sum", "concat", "reduce"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -2200,8 +2213,40 @@
 				"<code>concat([a, b, c])</code> is always equivalent to <code>a..b..c</code>."
 			]
 		],
-		"see_also": ["sum", "product"],
+		"see_also": ["sum", "product", "reduce"],
 		"categories": ["Functions"],
 		"examples": []
+	},
+	{
+		"name": "reduce",
+		"usage": "reduce(val)",
+		"description": [
+			[
+				"If the input stream contains values, this function pushes <var>val</var> back to the input stream.",
+				"Otherwise, it pushes the value to its output stream."
+			],
+			[
+				"<code>reduce</code> is intended to be used inside a <code>for</code> loop.",
+				"Often the underscore syntax is used in place of the loop."
+			]
+		],
+		"see_also": ["sum", "product", "concat", "pushBack"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>reduce</code> can be used to get the maximum value in the stream. (<code>sort|tail</code> is usually a better way to do this.)",
+				"code": [
+					"values() | reduce(if[val1>val2]do[val1]else[val2]done) for val1, val2"
+				]
+			},
+			{
+				"name": "Example 2",
+				"description": "<code>reduce</code> can be used to divide the first number with the other numbers (<code>1/2/3</code> = 1/6).",
+				"code": [
+					"[1, 2, 3] | reduce v1/v2 for v1, v2\n/* OR: */\n[1, 2, 3] | reduce _/_"
+				]
+			}
+		]
 	}
 ]
