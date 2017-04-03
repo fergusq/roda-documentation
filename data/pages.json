@@ -50,6 +50,7 @@
 			],
 			{ "type": "table", "caption": "Commands", "rows": [
 				{ "type": "header", "elements": ["Name", "Syntax"]},
+				["Interleave", {"type": "pre", "code": "COMMAND <> COMMAND <> ... <> COMMAND"}],
 				["If, unless, while, until (all work in the same way)",
 					{"type": "pre", "code": "if STATEMENT do STATEMENTS done\nif STATEMENT do STATEMENTS else STATEMENTS done"}],
 				["Suffix if, unless, while, until (all work in the same way)",
