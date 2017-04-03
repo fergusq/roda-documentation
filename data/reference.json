@@ -1327,9 +1327,29 @@
 		]
 	},
 	{
+		"name": "StreamError",
+		"usage": [
+			"record StreamError : Error {}"
+		],
+		"description": [
+			[
+				"This record is the super class of all stream-related errors."
+			]
+		],
+		"see_also": ["Error", "EmptyStreamError", "FullStreamError"],
+		"categories": ["Record classes"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "A <code>StreamError</code> is raised when an interleaved command return a different number of values than other commands.",
+				"code": "seq(1, 5) <> seq(1, 10) | for i, j do\n    print(i, \" \", j)\ndone"
+			}
+		]
+	},
+	{
 		"name": "FullStreamError",
 		"usage": [
-			"record FullStreamError : Error {}"
+			"record FullStreamError : StreamError {}"
 		],
 		"description": [
 			[
@@ -1337,7 +1357,7 @@
 				"statement expressions, eg. function calls, when the statement returns more than one value."
 			]
 		],
-		"see_also": ["Error", "EmptyStreamError"],
+		"see_also": ["StreamError", "EmptyStreamError"],
 		"categories": ["Record classes"],
 		"examples": [
 			{
@@ -1350,7 +1370,7 @@
 	{
 		"name": "EmptyStreamError",
 		"usage": [
-			"record EmptyStreamError : Error {}"
+			"record EmptyStreamError : StreamError {}"
 		],
 		"description": [
 			[
@@ -1358,7 +1378,7 @@
 				"That usually happens when a function doesn't return enough values."
 			]
 		],
-		"see_also": ["Error", "FullStreamError"],
+		"see_also": ["StreamError", "FullStreamError"],
 		"categories": ["Record classes"],
 		"examples": [
 			{
