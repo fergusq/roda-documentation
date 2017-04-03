@@ -261,7 +261,7 @@
 			"<pre><code class=\"rodacode\">function push(val...) {\n    val()\n}</code></pre>",
 			"This fact is often abused in conditions of if and while statements."
 		],
-		"see_also": ["pushBack", "pull", "[ ]", "return"],
+		"see_also": ["unpull", "pull", "[ ]", "return"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -277,7 +277,7 @@
 		]
 	},
 	{
-		"name": "pushBack",
+		"name": "unpull",
 		"usage": "pushBack(val...)",
 		"description": [
 			[
@@ -2250,7 +2250,7 @@
 				"Often the underscore syntax is used in place of the loop."
 			]
 		],
-		"see_also": ["sum", "product", "concat", "pushBack"],
+		"see_also": ["sum", "product", "concat", "unpull"],
 		"categories": ["Functions"],
 		"examples": [
 			{
