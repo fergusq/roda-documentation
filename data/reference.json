@@ -278,7 +278,7 @@
 	},
 	{
 		"name": "unpull",
-		"usage": "pushBack(val...)",
+		"usage": "unpull(val...)",
 		"description": [
 			[
 				"This function pushes its arguments back to its input stream,",
