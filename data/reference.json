@@ -491,7 +491,7 @@
 				"}"
 			] }
 		],
-		"see_also": ["for"],
+		"see_also": ["interleave-operator", "for"],
 		"categories": ["Functions"],
 		"examples": [
 			{
@@ -502,6 +502,41 @@
 					"countries := [\"United States\", \"Italy\", \"Finland\"]\n",
 					"interleave(cities, countries) | for city, country do\n",
 					"    print(city..\" is in \"..country)\n",
+					"done"
+				]
+			}
+		]
+	},
+	{
+		"name": "interleave-operator",
+		"title": "<>",
+		"usage": "command <> command <> ... <> command",
+		"description": [
+			[
+				"This operator is used to join two or more streams together, so that their values are interleaved.",
+				"If the streams do not have an equal size, a <code>StreamError</code> is raised."
+			]
+		],
+		"see_also": ["interleave", "for", "StreamError"],
+		"categories": ["Operators"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "<code>for</code> can be used together with <code>&lt;&gt;</code> to iterate multiple lists at the same time.",
+				"code": [
+					"cities := [\"New York\", \"Roma\", \"Turku\"]\n",
+					"countries := [\"United States\", \"Italy\", \"Finland\"]\n",
+					"cities <> countries | for city, country do\n",
+					"    print(city..\" is in \"..country)\n",
+					"done"
+				]
+			},
+			{
+				"name": "Example 2",
+				"description": "<code>for</code> can be used together with <code>&lt;&gt;</code> to iterate multiple streams at the same time.",
+				"code": [
+					"seq(1, 10) <> readLines(\"file.txt\", limit=10) |\nfor n, l do\n",
+					"    print(n, \" \", l)\n",
 					"done"
 				]
 			}
@@ -623,6 +658,36 @@
 				"code": "readLines(\"file.txt\") | tail(5) | reverse() | print(v) for v"
 			}
 		]
+	},
+	{
+		"_comment": "=== ADDHEAD AND ADDTAIL ===",
+		
+		"name": "addHead",
+		"usage": [ "addHead(values...)" ],
+		"description": [
+			[
+				"This function pushes each given argument to the stream, and then pulls all values from the input stream and pushes them to the stream."
+			],
+			"Example implementation:",
+			"<pre><code class=\"rodacode\">function addHead(values...) {\n    values()\n    identity()\n}</code></pre>"
+		],
+		"see_also": ["addTail", "identity"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "addTail",
+		"usage": [ "addTail(values...)" ],
+		"description": [
+			[
+				"This function pulls all values from its input stream and pushes them to the stream, and then pushes all its arguments to the stream."
+			],
+			"Example implementation:",
+			"<pre><code class=\"rodacode\">function addTail(values...) {\n    identity()\n    values()\n}</code></pre>"
+		],
+		"see_also": ["addHead", "identity"],
+		"categories": ["Functions"],
+		"examples": []
 	},
 	{
 		"_comment": "=== SORT, UNIQ AND COUNT ===",
@@ -2018,6 +2083,7 @@
 		"usage": [
 			"record Stream {",
 			"    push : function",
+			"    unpull : function",
 			"",
 			"    pull : function",
 			"    tryPull : function",
@@ -2238,6 +2304,32 @@
 		"examples": []
 	},
 	{
+		"name": "min",
+		"usage": "min()\nmin(fst=val)\nmin(lists...)\nmin(lists..., fst=val)",
+		"description": [
+			[
+				"This function reads all numbers from its input stream and returns the smallest value in them.",
+				"Alternatively, it returns the smallest value of each argument list."
+			]
+		],
+		"see_also": ["max", "reduce"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "max",
+		"usage": "max()\nmax(fst=val)\nmax(lists...)\nmax(lists..., fst=val)",
+		"description": [
+			[
+				"This function reads all numbers from its input stream and returns the greatest value in them.",
+				"Alternatively, it returns the greatest value of each argument list."
+			]
+		],
+		"see_also": ["min", "reduce"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
 		"name": "reduce",
 		"usage": "reduce(val)",
 		"description": [
@@ -2268,5 +2360,19 @@
 				]
 			}
 		]
+	},
+	{
+		"_comment": "=== MATH FUNCTIONS ===",
+		
+		"name": "abs",
+		"usage": "abs(n)",
+		"description": [
+			[
+				"This function return the absolute value of the number <var>n</var>."
+			]
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
 	}
 ]
