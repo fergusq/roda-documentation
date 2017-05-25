@@ -176,5 +176,81 @@
 				["10", "<code>and</code>, <code>or</code>, <code>xor</code>"]
 			]}
 		]
+	},
+	{
+		"name": "conventions",
+		"title": "Conventions",
+		"content": [
+			[
+				"In this page I list some of the style conventions I use while programming with Röda.",
+				"They reflect my own opinions and some of them might need a change."
+			],
+			{ "type": "subtitle", "text": "1 Naming conventions" },
+			{ "type": "subsubtitle", "text": "1.1 Case" },
+			{ "type": "table", "caption": "Naming conventions", "rows": [
+				{ "type": "header", "elements": ["Type", "Naming convention"]},
+				["File names", "<code>lower_case</code>"],
+				["Variables and fields", "<code>lower_case</code>"],
+				["Functions and methods", "<code>lowerCamelCase</code>"],
+				["Constants", "<code>UPPER_CASE</code>"],
+				["Records", "<code>UpperCamelCase</code>"]
+			]},
+			{ "type": "subsubtitle", "text": "1.2 Abbreviations" },
+			[
+				"In general, local variables can always be abbreviated if necessary.",
+				"Global variables and functions should be only if the abbreviation does not result in reduced clarity.",
+				"If possible, the abbreviations should be similar to ones used in other programming languages.",
+				"For example, <code>ls</code> (*<i>listFiles</i>) is a universally known and clear abbreviation."
+			],
+			{ "type": "subsubtitle", "text": "1.3 No <code>get</code> prefix" },
+			[
+				"No function name should begin with <code>get</code>.",
+				"For example, a hypothetical function <code>getAddress</code> should only be named <code>address</code>.",
+				"For improved clarity, a noun should be added to specify which address: <code>fileAddress</code>.",
+				"When the name has two parts and is written in camel case, it is clear that the name refers to a function and",
+				"not to a variable (like <code>file_address</code>)."
+			],
+			[
+				"There is an exception in the standard library, namely <code>getenv</code>.",
+				"It is named after a C function and is thus acceptable as a known abbreviation (see §1.2)."
+			],
+			{ "type": "subtitle", "text": "2 Functions" },
+			{ "type": "subsubtitle", "text": "2.1 Needle-haystack parameter order" },
+			[
+				"The parameters are usually in order <i>needle, haystack</i>.",
+				"Sometimes the function accepts multiple haystacks.",
+				"In this case zero haystacks usually means that the input stream is the haystack (see below §2.2)."
+			],
+			{ "type": "subsubtitle", "text": "2.2 Stream input" },
+			[
+				"A function should use the stream as an input method only if the stream can be thought to be a single object,",
+				"which could be replaced with a list argument.",
+				"If the function would only perform the same operation independently for each value in the stream,",
+				"the function should generally not accept stream input and the underscore syntax should be used."
+			],
+			[
+				"Eg. <code>grep</code> and <code>sort</code> handle the stream as if it was a list, and therefore do accept stream input.",
+				"However, functions like <code>parseInteger</code> and <code>abs</code> just perform one operation on a one single value,",
+				"and do therefore not accept stream input.",
+				"One can write <code>abs(_)</code> to map each item in the stream to its absolute value."
+			],
+			{ "type": "subsubtitle", "text": "2.2 Stream output" },
+			[
+				"No function should return a single list.",
+				"Instead the items of the list should be pushed to the stream individually.",
+				"Of course, a function can return multiple lists, and even a single list in the situation where it can return variable number of lists."
+			],
+			[
+				"If it is needed to convert the result of the function to a list, brackets <code>[]</code> can be used",
+				"(eg. <code>[sort(x)]</code>)."
+			],
+			{ "type": "subsubtitle", "text": "2.3 Reference parameters" },
+			[
+				"Reference parameters can be used as an output method whenever seed necessary.",
+				"However, I think it is a good practise to provide regular stream output when no reference is given as an argument.",
+				"For example, <code>pull</code>, <code>randomInteger</code> and <code>stream</code> all accept references,",
+				"but return the value in the stream if no arguments are given (<code>pull(var)</code> vs. <code>var := pull()</code>)."
+			]
+		]
 	}
 ]
