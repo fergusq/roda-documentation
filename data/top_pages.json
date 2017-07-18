@@ -7,8 +7,7 @@
 			{ "type": "subtitle", "text": "Download Röda" },
 			[
 				"The latest version of Röda is available on <a href=\"https://github.com/fergusq/roda\">Github</a>.",
-				"The current official version is 0.12 and the latest development version is 0.13.",
-				"The development version is in its own branch."
+				"The current official version is 0.13."
 			]
 		]
 	}
