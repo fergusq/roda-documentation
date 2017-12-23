@@ -9,6 +9,9 @@
 				"Welcome to the reference.",
 				"This site contains entries for most of the standard library functions,",
 				"records, variables, etc."
+			],
+			[
+				"The reference is not complete yet."
 			]
 		],
 		"see_also": [],
@@ -35,7 +38,7 @@
 				"code": [
 					"record StringBox(val) {\n    data : string = val\n\n",
 					"    function append(str : string) {\n        self.data .= str\n    }\n\n",
-					"    function asString() {\n        return \"<StringBox '\"..self.data..\"'>\"\n    }\n}",
+					"    function asString() {\n        return `&lt;StringBox \"${self.data}\"&gt;`\n    }\n}",
 					"\n\n",
 					"box = new StringBox(\"my value\")\nbox.append(\" is great\")\nprint(box.asString())"
 				]
@@ -402,7 +405,7 @@
 				"If there is already a value in the queue, this function will return it."
 			]
 		],
-		"see_also": ["tryPeek", "pull"],
+		"see_also": ["tryPeek", "pull", "open"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -419,7 +422,17 @@
 			],
 			"In contrast to <code>peek</code>, <code>tryPeek</code> can't be used without arguments."
 		],
-		"see_also": ["peek", "tryPull"],
+		"see_also": ["peek", "tryPull", "open"],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
+		"name": "open",
+		"usage": "open()",
+		"description": [
+			"This function returns true if its input stream is open and false otherwise."
+		],
+		"see_also": ["tryPull", "tryPeek"],
 		"categories": ["Functions"],
 		"examples": []
 	},
@@ -656,6 +669,24 @@
 					"Outputs the 5 last lines of a file, reversed."
 				],
 				"code": "readLines(\"file.txt\") | tail(5) | reverse() | print(v) for v"
+			}
+		]
+	},
+	{
+		"name": "enum",
+		"usage": "enum()",
+		"description": [
+			"This function pulls values from its input stream and pushes each to its output stream. After each pushed value, it pushes an ascending number, starting from zero."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": [
+					"<code>enum</code> can be used to enumerate lines of a file. In this example, we print the lines and their numbers."
+				],
+				"code": "readLines(\"file.txt\") | enum() | print(i+1, \"\\t\", line) for line, i"
 			}
 		]
 	},
@@ -1108,7 +1139,7 @@
 		"usage": "fileExists(filename...)",
 		"description": [
 			[
-				"For every given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
+				"For each given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
 				"If the file exists, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
 			]
 		],
@@ -1121,7 +1152,7 @@
 		"usage": "fileLength(filename...)",
 		"description": [
 			[
-				"For every given file name, this function pushes an integer to its output stream.",
+				"For each given file name, this function pushes an integer to its output stream.",
 				"The integer represents the size of the file in bytes."
 			]
 		],
@@ -1134,7 +1165,7 @@
 		"usage": "filePermissions(filename...)",
 		"description": [
 			[
-				"For every given file name, this function pushes an integer to its output stream.",
+				"For each given file name, this function pushes an integer to its output stream.",
 				"The integer represents the Posix permissions of the file."
 			]
 		],
@@ -1147,7 +1178,7 @@
 		"usage": "isFile(filename...)",
 		"description": [
 			[
-				"For every given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
+				"For each given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
 				"If the file is not a directory, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
 			]
 		],
@@ -1160,7 +1191,7 @@
 		"usage": "isDirectory(filename...)",
 		"description": [
 			[
-				"For every given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
+				"For each given file name, this function pushes <code>TRUE</code> or <code>FALSE</code> to its output stream.",
 				"If the file is a directory, value will be <code>TRUE</code>, otherwise <code>FALSE</code>."
 			]
 		],
@@ -1173,7 +1204,7 @@
 		"usage": "mimeType(filename...)",
 		"description": [
 			[
-				"For every given file name, this function pushes a string to its output stream.",
+				"For each given file name, this function pushes a string to its output stream.",
 				"The string represents the mime type of the file."
 			]
 		],
@@ -1694,6 +1725,16 @@
 		"examples": []
 	},
 	{
+		"name": "chars",
+		"usage": "chars()\nchars(str)",
+		"description": [
+			"This function pushes the characters in the given string to the stream as strings of individual characters. If no argument was given, it reads strings from its input stream."
+		],
+		"see_also": [],
+		"categories": ["Functions"],
+		"examples": []
+	},
+	{
 		"name": "join-operator",
 		"title": "&",
 		"usage": "strlist & separator",
@@ -1750,7 +1791,7 @@
 			"This function parses JSON data. It will take its input either as an argument or from the input stream.",
 			"The return values of this function will use the following format:",
 			[
-				"Every JSON value will be represented as a list of two elements. The first element is a string that represents the type of the value.",
+				"Each JSON value will be represented as a list of two elements. The first element is a string that represents the type of the value.",
 				"The second element is the value itself. The names of the types and the value representations are listed below."
 			],
 			{ "type": "table", "caption": "Format of JSON DATA", "rows": [
@@ -2070,7 +2111,7 @@
 		"usage": "stream(&vars...)\nstream()",
 		"description": [
 			[
-				"This function initializes every given variable with a new Stream object.",
+				"This function initializes each given variable with a new Stream object.",
 				"If no variables are given, this function pushes one Stream object to its output stream."
 			]
 		],
@@ -2156,13 +2197,12 @@
 				"description": [
 					"Stream objects can be used when implementing many algorithms.",
 					"A merge sort implementation could use streams as queues.",
-					"Please note that the non-standard <code>collect</code> function is used to put the values in the input stream to a list.",
 					"The default value of the <code>key</code> parameter is <code>push</code>, used as an identity function."
 				],
 				"code": [
 					"/* Merge sort */\n",
 					"function sort(key=push) {\n",
-					"    collect() | pull(values)\n",
+					"    sum(fst=[]) | pull(values)\n",
 					"    return *values if [ #values <= 1 ]\n",
 					"    stream l1, l2\n",
 					"    values[:#values//2]() | sort(key=key) | l1.push(); l1.finish()\n",
@@ -2364,14 +2404,39 @@
 	{
 		"_comment": "=== MATH FUNCTIONS ===",
 		
-		"name": "abs",
-		"usage": "abs(n)",
+		"name": "math-functions",
+		"title": "Math functions",
+		"usage": [
+			"abs(x)",
+			"acos(x)",
+			"asin(x)",
+			"atan(x)",
+			"atan2(x, y)",
+			"cbrt(x)",
+			"ceil(x)",
+			"cos(x)",
+			"cosh(x)",
+			"exp(x)",
+			"floor(x)",
+			"ln(x)",
+			"log(b, x)",
+			"log10(x)",
+			"round(x)",
+			"signum(x)",
+			"sin(x)",
+			"sinh(x)",
+			"sqrt(x)",
+			"tan(x)",
+			"tanh(x)\n",
+			"E",
+			"PI"
+		],
 		"description": [
 			[
-				"This function return the absolute value of the number <var>n</var>."
+				"This page is a list of math functions and constants available in Röda."
 			]
 		],
-		"see_also": [],
+		"see_also": ["sum", "product", "max"],
 		"categories": ["Functions"],
 		"examples": []
 	}
