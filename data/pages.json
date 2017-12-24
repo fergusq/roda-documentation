@@ -172,7 +172,7 @@
 				["6", "<code>b_and</code>, <code>b_or</code>, <code>b_shiftl</code>, <code>b_shiftr</code>, <code>b_shiftrr</code>"],
 				["7", "<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>in</code>"],
 				["8", "<code>..</code>, <code>...</code>"],
-				["9", "<code>=</code>, <code>!=</code>, <code>=~</code>", "<code>!~</code>"],
+				["9", "<code>=</code>, <code>!=</code>, <code>=~</code>, <code>!~</code>"],
 				["10", "<code>and</code>, <code>or</code>, <code>xor</code>"]
 			]}
 		]

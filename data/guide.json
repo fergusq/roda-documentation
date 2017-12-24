@@ -70,8 +70,8 @@
 				"There are some places in the code where must be a newline, and some places where must not."
 			],
 			[
-				"It is allowed to omit parantheses around function call arguments at the statement level,",
-				"but there must be a newline between the function name and the first argument."
+				"It is allowed to omit parantheses around function call arguments at the statement level.",
+				"There must not be a newline between the function name and the opening parethesis or the first argument."
 			],
 			{ "type": "pre", "code": [
 				"main {\n    func1 /* calling func1 */\n    func2 /* calling func2 */\n\n",
@@ -99,7 +99,7 @@
 				"as in Bourne shell, but this is no official rule."
 			],
 			[
-				"A semicolon and a newline character are lexically equivalent, ie. they are treated as they were the same character."
+				"Semicolon and newline characters are lexically equivalent, ie. they are treated as they were the same character."
 			]
 		]
 	},
@@ -119,11 +119,11 @@
 			[
 				"Röda is a dynamically typed language, which means that variables don't have a type bound to them.",
 				"This doesn't, however, imply that the types are not important.",
-				"Röda is also strongly typed and has a lot of type checks."
+				"Röda is strongly typed and does not allow using types in wrong places."
 			],
 			{ "type": "subtitle", "text": "Scopes, assignments and local assignments" },
 			[
-				"The scope of a variable means the part of the program where the variable is visible.",
+				"The scope of a variable is the part of the program where the variable is visible.",
 				"Generally every control structure body and block is a new scope.",
 				"A variable is visible in its declaration scope and super scopes but not in the super scopes."
 			],
@@ -135,7 +135,7 @@
 			] },
 			[
 				"The <code>=</code> operator is called the assignment operator as it gives a variable a new value.",
-				"If the variable already exists in the current scope of a super scope, it will be changed.",
+				"If the variable already exists in a super scope, it will be changed.",
 				"Otherwise, a new variable will be created in the current scope."
 			],
 			{ "type": "pre", "code": [
@@ -185,7 +185,7 @@
 				"The suffix form can sometimes be parsed in a way that the programmer did not intent:"
 			],
 			{ "type": "pre", "code": [
-				"age = parseInteger(text) if [ text =~ \"[0-9]+\" ] /* This won't work all will raise an error if text does not match the regex */"
+				"age = parseInteger(text) if [ text =~ \"[0-9]+\" ] /* This won't work and will raise an error if text does not match the regex */"
 			] },
 			[
 				"The above error is a side-efect of the fact that function calls are statements and the suffix is bound to the call, not the assignment.",
@@ -228,7 +228,7 @@
 				"Each function has an input stream and an output stream.",
 				"The two snippets above both push values to the output stream:",
 				"the <code>square</code> function pushes its return value and the <code>main</code> function above pushes its output.",
-				"In Röda, the only way to output to stdout is to push values to the output stream of the main function."
+				"In Röda, the primary way to output to stdout is to push values to the output stream of the main function."
 			],
 			[
 				"There is no limit in the number of elements that can be pushed to the output stream."
