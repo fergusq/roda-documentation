@@ -721,6 +721,31 @@
 		"examples": []
 	},
 	{
+		"_comment": "=== JOIN ===",
+
+		"name": "join",
+		"usage": [ "join(sep)" ],
+		"description": [
+			[
+				"This function pulls values from the stream and pushes them back separated by the given separator."
+			],
+			[
+				"In future, it is possible that this function will be renamed and a new join function",
+				"will be created that returns only one string.",
+				"The forwards-compatible way to use this function is <code>join(sep) | concat(fst=\"\")</code>."
+			]
+		],
+		"see_also": ["concat"],
+		"categories": ["Functions"],
+		"examples": [
+			{
+				"name": "Example 1",
+				"description": "This is the forwards-compatible way to use <code>join</code>.",
+				"code": "push(1, 2, 3) | join(\";\") | concat(fst=\"\") /* prints 1;2;3 */"
+			}
+		]
+	},
+	{
 		"_comment": "=== SORT, UNIQ AND COUNT ===",
 		
 		"name": "sort",
