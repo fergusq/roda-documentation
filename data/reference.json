@@ -2064,9 +2064,9 @@
 				"The possible type arguments and value arguments are given to the constructor."
 			],
 			{ "type": "pre", "code": [
-				"record Box<<T>>(val) {\n    val : T = val\n}\n\n",
+				"record Box&lt;&lt;T&gt;&gt;(val) {\n    val : T = val\n}\n\n",
 				"/* The following two lines do the same thing */\n",
-				"print(new Box<<integer>>(4))\nprint(reflect Box.newInstance<<integer>>(4))"
+				"print(new Box&lt;&lt;integer&gt;&gt;(4))\nprint(reflect Box.newInstance&lt;&lt;integer&gt;&gt;(4))"
 			] }
 		],
 		"see_also": ["Field", "reflect", "typeof", "is"],
